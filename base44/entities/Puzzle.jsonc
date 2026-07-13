@@ -1,0 +1,51 @@
+{
+  "name": "Puzzle",
+  "type": "object",
+  "properties": {
+    "fen": {
+      "type": "string"
+    },
+    "solution_moves": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "theme": {
+      "type": "string",
+      "enum": [
+        "fork",
+        "pin",
+        "skewer",
+        "discovered_attack",
+        "back_rank_mate",
+        "mate_in_1",
+        "mate_in_2",
+        "hanging_piece",
+        "deflection",
+        "double_check",
+        "smothered_mate",
+        "promotion",
+        "underpromotion",
+        "zugzwang"
+      ]
+    },
+    "rating": {
+      "type": "number",
+      "default": 1200
+    },
+    "description": {
+      "type": "string",
+      "default": ""
+    },
+    "explanation": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "required": [
+    "fen",
+    "solution_moves",
+    "theme"
+  ]
+}
