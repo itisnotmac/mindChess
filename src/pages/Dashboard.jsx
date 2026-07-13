@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
-import { Crown, TrendingUp, Flame, Brain, Target, Gamepad2, BookOpen, Trophy, Zap, ArrowRight } from 'lucide-react';
+import { Crown, TrendingUp, Flame, Brain, Target, Gamepad2, BookOpen, Trophy, Zap } from 'lucide-react';
 
 export default function Dashboard() {
   const [profile, setProfile] = useState(null);
@@ -73,17 +73,13 @@ export default function Dashboard() {
       </div>
 
       <h2 className="text-lg font-bold mb-4 text-foreground">Training Modules</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {modules.map((m, i) => (
-          <Link key={i} to={m.to} className="group bg-card border border-border rounded-xl p-6 hover:border-primary/40 transition-all teal-border-glow">
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <m.icon className={`w-8 h-8 mb-3 ${m.color}`} />
-                <h3 className="text-lg font-bold mb-1">{m.title}</h3>
-                <p className="text-sm text-muted-foreground">{m.desc}</p>
-              </div>
-              <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+          <Link key={i} to={m.to} className="group flex flex-col items-center gap-2 p-2 transition-all">
+            <div className={`p-4 rounded-full bg-card border border-border group-hover:border-primary/50 group-hover:teal-glow-sm transition-all`}>
+              <m.icon className={`w-12 h-12 md:w-14 md:h-14 ${m.color} group-hover:scale-110 transition-transform`} />
             </div>
+            <h3 className="text-xs md:text-sm font-bold text-center">{m.title}</h3>
           </Link>
         ))}
       </div>
