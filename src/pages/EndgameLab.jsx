@@ -4,6 +4,7 @@ import { createGame, makeMove, isCheckmate, isCheck, isDraw, isStalemate } from 
 import { playSound } from '@/lib/sound';
 import { ENDGAMES } from '@/lib/endgames';
 import { Target, Lightbulb } from 'lucide-react';
+import ReadAloudButton from '@/components/ReadAloudButton';
 
 export default function EndgameLab() {
   const [endgame, setEndgame] = useState(null);
@@ -79,6 +80,7 @@ export default function EndgameLab() {
                 <Lightbulb className="w-4 h-4 text-[#FFB300] mt-0.5 shrink-0" />
                 <p className="text-xs text-foreground/90">{endgame.explanation}</p>
               </div>
+              <ReadAloudButton text={endgame.explanation} className="mt-3" />
             </div>
           )}
         </div>

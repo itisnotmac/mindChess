@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Gamepad2, Brain, BookOpen, Target, User, Crown, MessageSquare } from 'lucide-react';
+import { LayoutDashboard, Gamepad2, Brain, BookOpen, Target, User, Crown, MessageSquare, Settings } from 'lucide-react';
 import AIChatPanel from '@/components/AIChatPanel';
+import { SettingsProvider } from '@/lib/SettingsContext';
+import SettingsDialog from '@/components/SettingsDialog';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -15,9 +17,11 @@ const NAV_ITEMS = [
 export default function Layout() {
   const location = useLocation();
   const [chatOpen, setChatOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-background overflow-hidden">
+  <SettingsProvider>
+  <div className="flex h-screen bg-background overflow-hidden">
       <aside className="hidden md:flex flex-col w-64 bg-sidebar border-r border-sidebar-border shrink-0">
         <div className="p-6">
           <Link to="/" className="flex items-center gap-2">
@@ -45,6 +49,11 @@ export default function Layout() {
             <MessageSquare className="w-5 h-5" />
             <span>Ask Coach</span>
           </button>
+          <button onClick={() => setSettingsOpen(true)}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 text-muted-foreground hover:text-foreground transition-all mt-2">
+            <Settings className="w-4 h-4" />
+            <span className="text-sm">Settings</span>
+          </button>
         </div>
       </aside>
 
@@ -69,8 +78,14 @@ export default function Layout() {
         className="md:hidden fixed bottom-20 right-4 w-14 h-14 bg-primary text-primary-foreground rounded-full flex items-center justify-center teal-glow z-40">
         <MessageSquare className="w-6 h-6" />
       </button>
+      <button onClick={() => setSettingsOpen(true)}
+        className="md:hidden fixed bottom-20 right-20 w-14 h-14 bg-card border border-border text-primary rounded-full flex items-center justify-center teal-glow-sm z-40">
+        <Settings className="w-6 h-6" />
+      </button>
 
       <AIChatPanel open={chatOpen} onClose={() => setChatOpen(false)} />
+      <SettingsDialog open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
+    </SettingsProvider>
   );
 }

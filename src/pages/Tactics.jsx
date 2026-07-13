@@ -5,6 +5,7 @@ import { createGame, makeMove, getFen, getTurn } from '@/lib/chessEngine';
 import { playSound } from '@/lib/sound';
 import { PUZZLES } from '@/lib/puzzles';
 import { Brain, Flame, CheckCircle2, XCircle, Lightbulb, SkipForward, Loader2 } from 'lucide-react';
+import ReadAloudButton from '@/components/ReadAloudButton';
 
 export default function Tactics() {
   const [puzzle, setPuzzle] = useState(null);
@@ -141,9 +142,12 @@ export default function Tactics() {
 
           {status === 'correct' && (
             <div className="bg-[#39FF14]/10 border border-[#39FF14]/30 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <CheckCircle2 className="w-5 h-5 text-[#39FF14]" />
-                <span className="font-bold text-[#39FF14]">Correct!</span>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-[#39FF14]" />
+                  <span className="font-bold text-[#39FF14]">Correct!</span>
+                </div>
+                <ReadAloudButton text={explanation} />
               </div>
               <div className="flex items-start gap-2">
                 <Lightbulb className="w-4 h-4 text-[#FFB300] mt-0.5 shrink-0" />
