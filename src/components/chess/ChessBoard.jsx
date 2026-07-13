@@ -88,7 +88,7 @@ export default function ChessBoard({ game, fen, onMove, orientation = 'white', i
 
   return (
     <div className={`relative w-full aspect-square ${className}`} style={{ maxWidth: '600px' }}>
-      <div className="grid grid-cols-8 w-full h-full rounded-lg overflow-hidden border-2 teal-border-glow">
+      <div className="grid grid-cols-8 w-full h-full rounded-lg overflow-hidden border-2 teal-border-glow" style={{ gridTemplateRows: 'repeat(8, minmax(0, 1fr))' }}>
         {rows.map((r, ri) =>
           cols.map((c, ci) => {
             const piece = board[r][c];
@@ -130,12 +130,12 @@ export default function ChessBoard({ game, fen, onMove, orientation = 'white', i
                     onDragStart={() => handleDragStart(square)}
                     onDragEnd={() => setDragSquare(null)}
                     className={`text-4xl sm:text-5xl md:text-6xl cursor-grab active:cursor-grabbing transition-transform hover:scale-110
-                      ${piece.color === 'w' ? 'text-white' : 'text-[#1A1A2E]'}
+                      ${piece.color === 'w' ? 'text-white' : 'text-[#4A4A6A]'}
                     `}
                     style={{
                       textShadow: piece.color === 'w'
                         ? '0 1px 3px rgba(0,0,0,0.6), 0 0 6px rgba(0,229,204,0.15)'
-                        : '0 1px 3px rgba(255,255,255,0.1), 0 0 2px rgba(0,0,0,0.4)'
+                        : '0 0 5px rgba(232,213,183,0.4), 0 1px 2px rgba(0,0,0,0.5)'
                     }}
                   >
                     {PIECE_UNICODE[piece.type]}
@@ -161,8 +161,8 @@ export default function ChessBoard({ game, fen, onMove, orientation = 'white', i
               <button
                 key={p}
                 onClick={() => selectPromotion(p)}
-                className={`w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center text-4xl sm:text-5xl bg-secondary hover:bg-primary/20 rounded-lg transition-colors ${turn === 'w' ? 'text-white' : 'text-[#1A1A2E]'}`}
-                style={{ textShadow: turn === 'w' ? '0 1px 3px rgba(0,0,0,0.6)' : '0 1px 3px rgba(255,255,255,0.1)' }}
+                className={`w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center text-4xl sm:text-5xl bg-secondary hover:bg-primary/20 rounded-lg transition-colors ${turn === 'w' ? 'text-white' : 'text-[#4A4A6A]'}`}
+                style={{ textShadow: turn === 'w' ? '0 1px 3px rgba(0,0,0,0.6)' : '0 0 5px rgba(232,213,183,0.4), 0 1px 2px rgba(0,0,0,0.5)' }}
               >
                 {PIECE_UNICODE[p]}
               </button>
