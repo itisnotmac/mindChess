@@ -4,7 +4,7 @@ import { speak, stopSpeaking } from '@/lib/tts';
 import { useSettings } from '@/lib/SettingsContext';
 
 export default function ReadAloudButton({ text, className = '' }) {
-  const { ttsEnabled } = useSettings();
+  const { ttsEnabled, voiceURI } = useSettings();
   const [speaking, setSpeaking] = useState(false);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function ReadAloudButton({ text, className = '' }) {
       stopSpeaking();
       setSpeaking(false);
     } else {
-      speak(text, { onEnd: () => setSpeaking(false) });
+      speak(text, { onEnd: () => setSpeaking(false), voiceURI });
       setSpeaking(true);
     }
   };
