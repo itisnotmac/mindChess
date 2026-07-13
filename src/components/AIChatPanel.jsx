@@ -49,8 +49,8 @@ export default function AIChatPanel({ open, onClose }) {
               <Bot className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h3 className="font-bold text-primary">Chess Coach</h3>
-              <p className="text-xs text-muted-foreground">Knows all things chess</p>
+              <h3 className="font-bold text-primary">the chess God</h3>
+              <p className="text-xs text-muted-foreground italic">definitely knows more than you about chess</p>
             </div>
           </div>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
