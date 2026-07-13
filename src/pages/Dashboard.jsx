@@ -55,7 +55,7 @@ export default function Dashboard() {
   return (
     <div className="p-6 md:p-8 max-w-6xl mx-auto">
       <div className="mb-8 flex flex-col items-center text-center">
-        <h1 className="text-3xl md:text-4xl font-bold text-primary teal-text-glow flex items-center gap-3 mb-2">Chess <Crown className="w-8 h-8 text-primary teal-text-glow" /> Mind</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-primary teal-text-glow flex items-center gap-3 mb-2">CHESS <Crown className="w-8 h-8 text-primary teal-text-glow" /> MIND</h1>
         <p className="text-sm text-primary teal-text-glow">From the team that brought you Reel Chess — Let's Chess!</p>
       </div>
 
