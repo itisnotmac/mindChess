@@ -68,7 +68,7 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <h2 className="text-lg font-bold mb-4 text-foreground">Training Modules</h2>
+      <h2 className="text-xl font-bold mb-4 text-primary teal-text-glow text-center">Training Modules</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {modules.map((m, i) => (
           <Link key={i} to={m.to} className="group flex flex-col items-center gap-2 p-2 transition-all">
