@@ -1,0 +1,44 @@
+{
+  "description": "A daily recurring workflow with a placeholder step. Runs every day at 9 AM UTC, forever.",
+  "name": "Daily Scheduled Task",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "daily_scheduled_task",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "placeholder_step": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "checkInactiveUsers"
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Placeholder step",
+            "description": "Replace with your daily task"
+          }
+        }
+      }
+    ]
+  },
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 9 * * *",
+      "one_time_date": null,
+      "timezone": "UTC",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  }
+}
