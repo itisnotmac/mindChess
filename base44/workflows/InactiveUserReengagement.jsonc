@@ -1,0 +1,70 @@
+{
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "inactive_user_reengagement",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "find_inactive": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "checkInactiveUsers"
+          },
+          "then": "wait_24h",
+          "x-base44": {
+            "title": "Find inactive users",
+            "description": "7-day inactive, send push notification"
+          }
+        }
+      },
+      {
+        "wait_24h": {
+          "wait": "PT24H",
+          "then": "send_followups",
+          "x-base44": {
+            "title": "Wait 24 hours",
+            "description": "Time to complete a puzzle"
+          }
+        }
+      },
+      {
+        "send_followups": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "checkPuzzleCompletion",
+            "args": {
+              "notified_users": "${ .find_inactive.notified_users }"
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Send follow-up emails",
+            "description": "Email those who didn't complete a puzzle"
+          }
+        }
+      }
+    ]
+  },
+  "description": "When a user is inactive for 7 days, send a push notification inviting them back to a daily puzzle. If they don't complete a puzzle within 24 hours, send a follow-up email with a Daily Challenge link.",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 9 * * *",
+      "one_time_date": null,
+      "timezone": "America/New_York",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "name": "Inactive User Re-engagement"
+}
