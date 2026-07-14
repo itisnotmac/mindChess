@@ -59,12 +59,11 @@ export default function Dashboard() {
         <p className="text-sm text-primary teal-text-glow">From the team that brought you Reel Chess — Let's Chess!</p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="flex items-center justify-center gap-6 md:gap-8 mb-8">
         {stats.map((s, i) => (
-          <div key={i} className="bg-card border border-border rounded-xl p-4 teal-border-glow">
-            <s.icon className={`w-5 h-5 mb-2 ${s.color}`} />
-            <div className="text-2xl font-bold">{s.value}</div>
-            <div className="text-xs text-muted-foreground">{s.label}</div>
+          <div key={i} className="flex items-center gap-2">
+            <s.icon className={`w-5 h-5 ${s.color}`} />
+            <span className="text-xl font-bold">{s.value}</span>
           </div>
         ))}
       </div>
