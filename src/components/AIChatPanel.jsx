@@ -25,6 +25,7 @@ export default function AIChatPanel({ open, onClose }) {
     setInput('');
     setLoading(true);
     setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
+    base44.analytics.track({ eventName: 'ai_mentor_advice_request', properties: { message_length: userMsg.length } });
     try {
       const conversation = messages.map(m => `${m.role === 'user' ? 'Student' : 'Coach'}: ${m.content}`).join('\n');
       const response = await base44.integrations.Core.InvokeLLM({
