@@ -71,7 +71,7 @@ export default function Dashboard() {
       <h2 className="text-xl font-bold mb-4 text-primary teal-text-glow text-center">Training Modules</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {modules.map((m, i) => (
-          <Link key={i} to={m.to} className="group flex flex-col items-center gap-2 p-2 transition-all">
+          <Link key={i} to={m.to} onClick={() => base44.analytics.track({ eventName: 'training_module_click', properties: { module: m.title } })} className="group flex flex-col items-center gap-2 p-2 transition-all">
             <div className={`p-4 rounded-full bg-card border border-border group-hover:border-primary/50 group-hover:teal-glow-sm transition-all`}>
               <m.icon className={`w-12 h-12 md:w-14 md:h-14 ${m.color} group-hover:scale-110 transition-transform`} />
             </div>
