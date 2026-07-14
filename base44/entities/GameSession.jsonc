@@ -56,6 +56,10 @@
         "type": "object"
       },
       "default": []
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000
     }
   },
   "required": []

@@ -27,6 +27,10 @@
     "rating_after": {
       "type": "number",
       "default": 1200
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000
     }
   },
   "required": [
