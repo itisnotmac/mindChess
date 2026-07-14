@@ -1,4 +1,23 @@
 {
+  "name": "Inactive User Re-engagement",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 9 * * *",
+      "one_time_date": null,
+      "timezone": "UTC",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "description": "When a user is inactive for 7 days, send a push notification inviting them back to a daily puzzle. If they don't complete a puzzle within 24 hours, send a follow-up email with a Daily Challenge link.",
   "definition": {
     "document": {
       "dsl": "1.0.0",
@@ -47,24 +66,5 @@
         }
       }
     ]
-  },
-  "description": "When a user is inactive for 7 days, send a push notification inviting them back to a daily puzzle. If they don't complete a puzzle within 24 hours, send a follow-up email with a Daily Challenge link.",
-  "trigger": {
-    "condition": null,
-    "config": {
-      "trigger_type": "scheduled",
-      "events": [],
-      "schedule_mode": "recurring",
-      "cron_expression": "0 9 * * *",
-      "one_time_date": null,
-      "timezone": "America/New_York",
-      "interval_value": null,
-      "interval_unit": null,
-      "interval_anchor": null,
-      "ends_type": "never",
-      "ends_on_date": null,
-      "ends_after_count": null
-    }
-  },
-  "name": "Inactive User Re-engagement"
+  }
 }
