@@ -81,6 +81,17 @@
       },
       "default": []
     },
+    "completed_lessons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "path_xp": {
+      "type": "number",
+      "default": 0
+    },
     "description": {
       "type": "string",
       "maxLength": 1000

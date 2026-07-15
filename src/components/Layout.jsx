@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Gamepad2, Brain, BookOpen, Target, User, Crown, MessageSquare, Settings, Library, Microscope } from 'lucide-react';
+import { LayoutDashboard, Gamepad2, Brain, BookOpen, Target, User, Crown, MessageSquare, Settings, Library, Microscope, GraduationCap } from 'lucide-react';
 import AIChatPanel from '@/components/AIChatPanel';
 import { SettingsProvider } from '@/lib/SettingsContext';
 import SettingsDialog from '@/components/SettingsDialog';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/learn', label: 'Learn', icon: GraduationCap },
   { to: '/play', label: 'Play', icon: Gamepad2 },
   { to: '/tactics', label: 'Tactics', icon: Brain },
   { to: '/openings', label: 'Openings', icon: BookOpen },
