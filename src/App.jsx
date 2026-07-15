@@ -18,6 +18,7 @@ import About from '@/pages/About';
 import Contact from '@/pages/Contact';
 import GameLibrary from '@/pages/GameLibrary';
 import GameDetail from '@/pages/GameDetail';
+import AnalyzeGame from '@/pages/AnalyzeGame';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -56,6 +57,7 @@ const AuthenticatedApp = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/library" element={<GameLibrary />} />
         <Route path="/library/:id" element={<GameDetail />} />
+        <Route path="/analyze" element={<AnalyzeGame />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

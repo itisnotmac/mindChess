@@ -268,6 +268,35 @@ export function getMoveQuality(game, move) {
   return 'blunder';
 }
 
+export function evaluatePosition(game, depth) {
+  if (game.isGameOver()) return evaluateBoard(game);
+  return minimax(game, depth, -Infinity, Infinity, game.turn() === 'w');
+}
+
+export function getBestMove(game, depth) {
+  const moves = game.moves({ verbose: true });
+  if (moves.length === 0) return null;
+  const isMax = game.turn() === 'w';
+  let best = moves[0], bestScore = isMax ? -Infinity : Infinity;
+  for (const m of moves) {
+    game.move(m);
+    const score = minimax(game, depth - 1, -Infinity, Infinity, !isMax);
+    game.undo();
+    if (isMax ? score > bestScore : score < bestScore) { bestScore = score; best = m; }
+  }
+  return { move: best, score: bestScore };
+}
+
+export function loadPgnGame(pgn) {
+  try {
+    const g = new Chess();
+    const ok = g.loadPgn(pgn);
+    return ok ? g : null;
+  } catch {
+    return null;
+  }
+}
+
 export const PIECE_UNICODE = {
   k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟'
 };
