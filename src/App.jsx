@@ -14,6 +14,8 @@ import Tactics from '@/pages/Tactics';
 import Openings from '@/pages/Openings';
 import EndgameLab from '@/pages/EndgameLab';
 import Profile from '@/pages/Profile';
+import About from '@/pages/About';
+import Contact from '@/pages/Contact';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -48,6 +50,8 @@ const AuthenticatedApp = () => {
         <Route path="/openings" element={<Openings />} />
         <Route path="/endgames" element={<EndgameLab />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

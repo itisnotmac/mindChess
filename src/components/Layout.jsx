@@ -12,6 +12,8 @@ const NAV_ITEMS = [
   { to: '/openings', label: 'Openings', icon: BookOpen },
   { to: '/endgames', label: 'Endgames', icon: Target },
   { to: '/profile', label: 'Profile', icon: User },
+  { to: '/about', label: 'About', icon: Crown },
+  { to: '/contact', label: 'Contact', icon: MessageSquare },
 ];
 
 export default function Layout() {
