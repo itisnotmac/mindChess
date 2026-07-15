@@ -169,7 +169,7 @@ export default function PlayVsAI() {
             <button key={c} onClick={() => setPlayerColor(c)}
               className={`p-6 rounded-lg border transition-all flex flex-col items-center gap-2
                 ${playerColor === c ? 'border-primary bg-primary/10 teal-glow-sm' : 'border-border bg-card hover:border-primary/30'}`}>
-              <div className={`w-12 h-12 rounded-full border-2 ${c === 'white' ? 'bg-white border-gray-300' : 'bg-[#1A1A2E] border-gray-600'}`} />
+              <div className={`w-12 h-12 rounded-full border-2 ${c === 'white' ? 'bg-white border-gray-300' : 'bg-card border-gray-600'}`} />
               <span className="font-medium capitalize">{c}</span>
             </button>
           ))}
@@ -238,7 +238,7 @@ export default function PlayVsAI() {
           <div className="bg-card border border-primary/30 rounded-xl p-8 max-w-md w-full teal-glow text-center">
             <h2 className="text-3xl font-bold mb-2">
               {gameResult === 'win' ? <span className="text-[#39FF14]">Victory!</span> :
-               gameResult === 'loss' ? <span className="text-[#FF4757]">Defeat</span> :
+               gameResult === 'loss' ? <span className="text-destructive">Defeat</span> :
                <span className="text-[#FFB300]">Draw</span>}
             </h2>
             <p className="text-muted-foreground mb-4">
@@ -247,7 +247,7 @@ export default function PlayVsAI() {
             {eloChange !== 0 && (
               <div className="mb-4">
                 <span className="text-sm text-muted-foreground">ELO </span>
-                <span className={`font-bold text-lg ${eloChange > 0 ? 'text-[#39FF14]' : 'text-[#FF4757]'}`}>
+                <span className={`font-bold text-lg ${eloChange > 0 ? 'text-[#39FF14]' : 'text-destructive'}`}>
                   {eloChange > 0 ? '+' : ''}{eloChange}
                 </span>
               </div>
