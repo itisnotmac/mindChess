@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Gamepad2, Brain, BookOpen, Target, User, Crown, MessageSquare, Settings } from 'lucide-react';
+import { LayoutDashboard, Gamepad2, Brain, BookOpen, Target, User, Crown, MessageSquare, Settings, Library } from 'lucide-react';
 import AIChatPanel from '@/components/AIChatPanel';
 import { SettingsProvider } from '@/lib/SettingsContext';
 import SettingsDialog from '@/components/SettingsDialog';
@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { to: '/tactics', label: 'Tactics', icon: Brain },
   { to: '/openings', label: 'Openings', icon: BookOpen },
   { to: '/endgames', label: 'Endgames', icon: Target },
+  { to: '/library', label: 'Library', icon: Library },
   { to: '/profile', label: 'Profile', icon: User },
   { to: '/about', label: 'About', icon: Crown },
   { to: '/contact', label: 'Contact', icon: MessageSquare },

@@ -16,6 +16,8 @@ import EndgameLab from '@/pages/EndgameLab';
 import Profile from '@/pages/Profile';
 import About from '@/pages/About';
 import Contact from '@/pages/Contact';
+import GameLibrary from '@/pages/GameLibrary';
+import GameDetail from '@/pages/GameDetail';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -52,6 +54,8 @@ const AuthenticatedApp = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/library" element={<GameLibrary />} />
+        <Route path="/library/:id" element={<GameDetail />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
