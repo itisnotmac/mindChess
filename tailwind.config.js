@@ -77,17 +77,30 @@ module.exports = {
   				}
   			},
   			'accordion-up': {
-  				from: {
-  					height: 'var(--radix-accordion-content-height)'
+  					from: {
+  						height: 'var(--radix-accordion-content-height)'
+  					},
+  					to: {
+  						height: '0'
+  					}
   				},
-  				to: {
-  					height: '0'
+  				'shake': {
+  					'0%, 100%': { transform: 'rotate(0deg)' },
+  					'10%': { transform: 'rotate(-16deg)' },
+  					'20%': { transform: 'rotate(15deg)' },
+  					'30%': { transform: 'rotate(-13deg)' },
+  					'40%': { transform: 'rotate(12deg)' },
+  					'50%': { transform: 'rotate(-10deg)' },
+  					'60%': { transform: 'rotate(8deg)' },
+  					'70%': { transform: 'rotate(-6deg)' },
+  					'80%': { transform: 'rotate(4deg)' },
+  					'90%': { transform: 'rotate(-2deg)' }
   				}
-  			}
-  		},
+  			},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
+  			'accordion-up': 'accordion-up 0.2s ease-out',
+  			'shake': 'shake 0.5s ease-in-out infinite'
   		}
   	}
   },
