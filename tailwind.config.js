@@ -85,16 +85,16 @@ module.exports = {
   					}
   				},
   				'shake': {
-  					'0%, 100%': { transform: 'rotate(0deg)' },
-  					'10%': { transform: 'rotate(-16deg)' },
-  					'20%': { transform: 'rotate(15deg)' },
-  					'30%': { transform: 'rotate(-13deg)' },
-  					'40%': { transform: 'rotate(12deg)' },
-  					'50%': { transform: 'rotate(-10deg)' },
-  					'60%': { transform: 'rotate(8deg)' },
-  					'70%': { transform: 'rotate(-6deg)' },
-  					'80%': { transform: 'rotate(4deg)' },
-  					'90%': { transform: 'rotate(-2deg)' }
+  					'0%, 100%': { transform: 'rotate(0deg) translate(0, 0)' },
+  					'10%': { transform: 'rotate(-16deg) translate(-3px, -2px)' },
+  					'20%': { transform: 'rotate(15deg) translate(3px, 2px)' },
+  					'30%': { transform: 'rotate(-13deg) translate(-2px, -3px)' },
+  					'40%': { transform: 'rotate(12deg) translate(2px, 3px)' },
+  					'50%': { transform: 'rotate(-10deg) translate(-3px, 2px)' },
+  					'60%': { transform: 'rotate(8deg) translate(3px, -2px)' },
+  					'70%': { transform: 'rotate(-6deg) translate(-2px, 3px)' },
+  					'80%': { transform: 'rotate(4deg) translate(2px, -3px)' },
+  					'90%': { transform: 'rotate(-2deg) translate(-1px, 1px)' }
   				}
   			},
   		animation: {
