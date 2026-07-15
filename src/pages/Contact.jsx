@@ -1,35 +1,26 @@
 import React, { useState } from 'react';
-import { Mail, MessageSquare, Send, Loader2 } from 'lucide-react';
+import { Mail, Send } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+
+const CONTACT_EMAIL = 'mindchessgame@gmail.com';
 
 export default function Contact() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
-  const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
 
-  const submit = async (e) => {
+  const submit = (e) => {
     e.preventDefault();
     if (!name.trim() || !email.trim() || !message.trim()) {
       setError('Please fill out all fields.');
       return;
     }
-    setSending(true);
     setError('');
     base44.analytics.track({ eventName: 'contact_form_submit', properties: { length: message.length } });
-    try {
-      await base44.integrations.Core.SendEmail({
-        to: 'support@chessmind.app',
-        subject: `Chess Mind contact from ${name}`,
-        body: `Name: ${name}\nEmail: ${email}\n\n${message}`,
-      });
-      setSent(true);
-    } catch (err) {
-      setError('Something went wrong sending your message. Please try again or email us directly.');
-    }
-    setSending(false);
+    const subject = encodeURIComponent(`Chess Mind contact from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -41,7 +32,7 @@ export default function Contact() {
 
       <p className="text-foreground/90 leading-relaxed mb-6">
         Questions, feedback, or found a puzzle you love? We would love to hear from you. Send us a message
-        using the form below and we will get back to you as soon as we can.
+        using the form below and your email app will open, or reach us directly at the address listed.
       </p>
 
       <div className="bg-card border border-border rounded-xl p-4 mb-6 teal-border-glow">
@@ -51,47 +42,41 @@ export default function Contact() {
           </div>
           <div>
             <div className="text-xs text-muted-foreground uppercase tracking-wide">Email</div>
-            <a href="mailto:support@chessmind.app" className="text-primary font-medium hover:underline">
-              support@chessmind.app
+            <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary font-medium hover:underline">
+              {CONTACT_EMAIL}
             </a>
           </div>
         </div>
       </div>
 
-      {sent ? (
-        <div className="bg-primary/10 border border-primary/30 rounded-xl p-6 text-center">
-          <MessageSquare className="w-8 h-8 text-primary mx-auto mb-2" />
-          <p className="font-bold text-primary">Thanks for reaching out!</p>
-          <p className="text-sm text-muted-foreground mt-1">Your message has been sent. We will be in touch soon.</p>
+      <form onSubmit={submit} className="space-y-4 bg-card border border-border rounded-xl p-5 teal-border-glow">
+        <div>
+          <label className="text-xs text-muted-foreground uppercase tracking-wide">Name</label>
+          <input value={name} onChange={e => setName(e.target.value)}
+            className="w-full mt-1 bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary teal-border-glow"
+            placeholder="Your name" />
         </div>
-      ) : (
-        <form onSubmit={submit} className="space-y-4 bg-card border border-border rounded-xl p-5 teal-border-glow">
-          <div>
-            <label className="text-xs text-muted-foreground uppercase tracking-wide">Name</label>
-            <input value={name} onChange={e => setName(e.target.value)}
-              className="w-full mt-1 bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary teal-border-glow"
-              placeholder="Your name" />
-          </div>
-          <div>
-            <label className="text-xs text-muted-foreground uppercase tracking-wide">Email</label>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-              className="w-full mt-1 bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary teal-border-glow"
-              placeholder="you@example.com" />
-          </div>
-          <div>
-            <label className="text-xs text-muted-foreground uppercase tracking-wide">Message</label>
-            <textarea value={message} onChange={e => setMessage(e.target.value)} rows={5}
-              className="w-full mt-1 bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary teal-border-glow resize-none"
-              placeholder="What's on your mind?" />
-          </div>
-          {error && <p className="text-sm text-destructive">{error}</p>}
-          <button type="submit" disabled={sending}
-            className="w-full flex items-center justify-center gap-2 py-2.5 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all teal-glow-sm disabled:opacity-50">
-            {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-            {sending ? 'Sending...' : 'Send Message'}
-          </button>
-        </form>
-      )}
+        <div>
+          <label className="text-xs text-muted-foreground uppercase tracking-wide">Email</label>
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+            className="w-full mt-1 bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary teal-border-glow"
+            placeholder="you@example.com" />
+        </div>
+        <div>
+          <label className="text-xs text-muted-foreground uppercase tracking-wide">Message</label>
+          <textarea value={message} onChange={e => setMessage(e.target.value)} rows={5}
+            className="w-full mt-1 bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary teal-border-glow resize-none"
+            placeholder="What's on your mind?" />
+        </div>
+        {error && <p className="text-sm text-destructive">{error}</p>}
+        <button type="submit"
+          className="w-full flex items-center justify-center gap-2 py-2.5 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all teal-glow-sm">
+          <Send className="w-4 h-4" /> Send Message
+        </button>
+        <p className="text-xs text-muted-foreground text-center">
+          Submitting opens your email app addressed to {CONTACT_EMAIL}.
+        </p>
+      </form>
     </div>
   );
 }
