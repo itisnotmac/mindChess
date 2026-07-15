@@ -131,10 +131,10 @@ export default function Tactics() {
           </div>
 
           {failed && status === 'solving' && (
-            <div className="bg-[#FF4757]/10 border border-[#FF4757]/30 rounded-xl p-4">
+            <div className="bg-destructive/10 border border-destructive/30 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-1">
-                <XCircle className="w-5 h-5 text-[#FF4757]" />
-                <span className="font-bold text-[#FF4757]">Not quite!</span>
+                <XCircle className="w-5 h-5 text-destructive" />
+                <span className="font-bold text-destructive">Not quite!</span>
               </div>
               <p className="text-xs text-muted-foreground">Streak reset. Try again or skip to the next puzzle.</p>
             </div>
