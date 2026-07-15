@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
 import { Crown, TrendingUp, Flame, Brain, Target, Gamepad2, BookOpen, Trophy, Zap } from 'lucide-react';
+import IntroSequence from '@/components/IntroSequence';
 
 export default function Dashboard() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [introDone, setIntroDone] = useState(() => {
+    try { return sessionStorage.getItem('chessmind_intro_seen') === '1'; } catch { return false; }
+  });
 
   useEffect(() => {
     (async () => {
@@ -30,13 +34,11 @@ export default function Dashboard() {
     })();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
-      </div>
-    );
-  }
+  const loadingView = (
+    <div className="flex items-center justify-center h-full">
+      <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
+    </div>
+  );
 
   const modules = [
     { to: '/play', icon: Gamepad2, title: 'Play vs AI', desc: '5 difficulty levels with live coaching', color: 'text-primary' },
@@ -52,7 +54,15 @@ export default function Dashboard() {
     { icon: Brain, label: 'Puzzles Solved', value: profile?.puzzles_solved || 0, color: 'text-destructive' },
   ];
 
+  const handleIntroDone = () => {
+    try { sessionStorage.setItem('chessmind_intro_seen', '1'); } catch {}
+    setIntroDone(true);
+  };
+
   return (
+    <>
+    {!introDone && <IntroSequence onComplete={handleIntroDone} />}
+    {loading ? loadingView : (
     <div className="p-6 md:p-8 max-w-6xl mx-auto">
       <div className="mb-8 flex flex-col items-center text-center">
         <h1 className="text-3xl md:text-4xl font-bold text-primary teal-text-glow flex items-center gap-3 mb-2">CHESS <Crown className="w-8 h-8 text-primary teal-text-glow" /> MIND</h1>
@@ -96,5 +106,7 @@ export default function Dashboard() {
         </>
       )}
     </div>
+    )}
+    </>
   );
 }
