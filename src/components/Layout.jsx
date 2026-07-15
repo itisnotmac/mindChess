@@ -26,7 +26,22 @@ export default function Layout() {
 
   return (
   <SettingsProvider>
-  <div className="flex h-screen bg-background overflow-hidden">
+  <div className="flex flex-col h-screen bg-background overflow-hidden">
+      <header className="md:hidden shrink-0 flex items-center justify-between px-4 py-2 bg-sidebar border-b border-sidebar-border">
+        <Link to="/" className="flex items-center gap-2">
+          <Crown className="w-6 h-6 text-primary teal-text-glow" />
+          <span className="text-lg font-bold text-primary teal-text-glow">Chess Mind</span>
+        </Link>
+        <div className="flex items-center gap-1">
+          <button onClick={() => setChatOpen(true)} className="w-10 h-10 flex items-center justify-center text-primary rounded-lg hover:bg-primary/10 teal-glow-sm" aria-label="Ask Coach">
+            <MessageSquare className="w-5 h-5" />
+          </button>
+          <button onClick={() => setSettingsOpen(true)} className="w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-foreground rounded-lg hover:bg-secondary" aria-label="Settings">
+            <Settings className="w-5 h-5" />
+          </button>
+        </div>
+      </header>
+      <div className="flex flex-1 overflow-hidden">
       <aside className="hidden md:flex flex-col w-64 bg-sidebar border-r border-sidebar-border shrink-0">
         <div className="p-6">
           <Link to="/" className="flex items-center gap-2">
@@ -65,6 +80,7 @@ export default function Layout() {
       <main className="flex-1 overflow-auto pb-20 md:pb-0">
         <Outlet />
       </main>
+      </div>
 
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-sidebar border-t border-sidebar-border flex justify-around py-2 z-40">
         {NAV_ITEMS.map(item => {
@@ -78,15 +94,6 @@ export default function Layout() {
           );
         })}
       </nav>
-
-      <button onClick={() => setSettingsOpen(true)}
-        className="md:hidden fixed bottom-20 left-4 w-14 h-14 bg-card border border-border text-primary rounded-full flex items-center justify-center teal-glow-sm z-40">
-        <Settings className="w-6 h-6" />
-      </button>
-      <button onClick={() => setChatOpen(true)}
-        className="md:hidden fixed bottom-20 left-20 w-14 h-14 bg-primary text-primary-foreground rounded-full flex items-center justify-center teal-glow z-40">
-        <MessageSquare className="w-6 h-6" />
-      </button>
 
       <AIChatPanel open={chatOpen} onClose={() => setChatOpen(false)} />
       <SettingsDialog open={settingsOpen} onClose={() => setSettingsOpen(false)} />
