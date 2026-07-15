@@ -52,7 +52,7 @@ export default function Profile() {
     { icon: TrendingUp, label: 'ELO Rating', value: profile.elo || 1200, color: 'text-primary' },
     { icon: Brain, label: 'Puzzle Rating', value: profile.puzzle_rating || 1200, color: 'text-[#39FF14]' },
     { icon: Flame, label: 'Longest Streak', value: profile.longest_streak || 0, color: 'text-[#FFB300]' },
-    { icon: Target, label: 'Puzzle Accuracy', value: `${puzzleAccuracy}%`, color: 'text-[#FF4757]' },
+    { icon: Target, label: 'Puzzle Accuracy', value: `${puzzleAccuracy}%`, color: 'text-destructive' },
   ];
 
   return (
@@ -80,8 +80,8 @@ export default function Profile() {
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,229,204,0.1)" />
               <XAxis dataKey="game" stroke="rgba(255,255,255,0.3)" fontSize={12} />
               <YAxis stroke="rgba(255,255,255,0.3)" fontSize={12} domain={['dataMin - 50', 'dataMax + 50']} />
-              <Tooltip contentStyle={{ background: '#12121C', border: '1px solid rgba(0,229,204,0.3)', borderRadius: '8px', fontSize: '12px' }} />
-              <Line type="monotone" dataKey="rating" stroke="#00E5CC" strokeWidth={2} dot={{ fill: '#00E5CC', r: 3 }} />
+              <Tooltip contentStyle={{ background: 'hsl(var(--background))', border: '1px solid rgba(0,229,204,0.3)', borderRadius: '8px', fontSize: '12px' }} />
+              <Line type="monotone" dataKey="rating" stroke="hsl(var(--ring))" strokeWidth={2} dot={{ fill: 'hsl(var(--ring))', r: 3 }} />
             </LineChart>
           </ResponsiveContainer>
         ) : (
@@ -95,7 +95,7 @@ export default function Profile() {
           <div className="text-xs text-muted-foreground">Wins</div>
         </div>
         <div className="bg-card border border-border rounded-xl p-4 teal-border-glow text-center">
-          <div className="text-3xl font-bold text-[#FF4757]">{profile.games_lost || 0}</div>
+          <div className="text-3xl font-bold text-destructive">{profile.games_lost || 0}</div>
           <div className="text-xs text-muted-foreground">Losses</div>
         </div>
         <div className="bg-card border border-border rounded-xl p-4 teal-border-glow text-center">
@@ -127,7 +127,7 @@ export default function Profile() {
               <div key={i} className="flex items-center justify-between bg-card border border-border rounded-lg p-3 teal-border-glow">
                 <div className="flex items-center gap-3">
                   <span className={`px-2 py-1 rounded text-xs font-bold uppercase
-                    ${s.result === 'win' ? 'bg-[#39FF14]/10 text-[#39FF14]' : s.result === 'loss' ? 'bg-[#FF4757]/10 text-[#FF4757]' : 'bg-[#FFB300]/10 text-[#FFB300]'}`}>
+                    ${s.result === 'win' ? 'bg-[#39FF14]/10 text-[#39FF14]' : s.result === 'loss' ? 'bg-destructive/10 text-destructive' : 'bg-[#FFB300]/10 text-[#FFB300]'}`}>
                     {s.result}
                   </span>
                   <span className="text-sm text-muted-foreground capitalize">{s.ai_difficulty}</span>
