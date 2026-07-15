@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { MASTER_GAMES, CATEGORIES, DIFFICULTIES } from '@/lib/masterGames';
 import { Library, Search, ChevronRight, Calendar } from 'lucide-react';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 const DIFFICULTY_COLOR = {
   beginner: 'text-[#39FF14] border-[#39FF14]/30 bg-[#39FF14]/10',
@@ -49,16 +50,24 @@ export default function GameLibrary() {
             className="w-full pl-9 pr-3 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:border-primary teal-border-glow"
           />
         </div>
-        <select value={category} onChange={e => setCategory(e.target.value)}
-          className="bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary teal-border-glow">
-          <option value="all">All categories</option>
-          {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
-        </select>
-        <select value={difficulty} onChange={e => setDifficulty(e.target.value)}
-          className="bg-card border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary teal-border-glow">
-          <option value="all">All levels</option>
-          {DIFFICULTIES.map(d => <option key={d.id} value={d.id}>{d.label}</option>)}
-        </select>
+        <Select value={category} onValueChange={setCategory}>
+          <SelectTrigger className="w-auto bg-card border-border rounded-lg px-3 py-2 text-sm focus:border-primary teal-border-glow">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All categories</SelectItem>
+            {CATEGORIES.map(c => <SelectItem key={c.id} value={c.id}>{c.label}</SelectItem>)}
+          </SelectContent>
+        </Select>
+        <Select value={difficulty} onValueChange={setDifficulty}>
+          <SelectTrigger className="w-auto bg-card border-border rounded-lg px-3 py-2 text-sm focus:border-primary teal-border-glow">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All levels</SelectItem>
+            {DIFFICULTIES.map(d => <SelectItem key={d.id} value={d.id}>{d.label}</SelectItem>)}
+          </SelectContent>
+        </Select>
       </div>
 
       {filtered.length === 0 ? (

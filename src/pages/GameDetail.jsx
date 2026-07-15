@@ -89,20 +89,20 @@ export default function GameDetail() {
           </div>
           <div className="flex items-center gap-2 mt-4">
             <button onClick={() => { setMoveIndex(0); setAutoPlay(false); }}
-              className="p-2 rounded-lg border border-border hover:bg-secondary transition-all">
+              className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg border border-border hover:bg-secondary transition-all">
               <RotateCcw className="w-4 h-4" />
             </button>
             <button onClick={() => setMoveIndex(i => Math.max(0, i - 1))} disabled={moveIndex === 0}
-              className="p-2 rounded-lg border border-border hover:bg-secondary transition-all disabled:opacity-30">
+              className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg border border-border hover:bg-secondary transition-all disabled:opacity-30">
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button onClick={() => setAutoPlay(!autoPlay)} disabled={moveIndex >= game.moves.length}
-              className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-medium disabled:opacity-30 teal-glow-sm flex items-center gap-2">
+              className="px-4 min-h-[44px] py-2 rounded-lg bg-primary text-primary-foreground font-medium disabled:opacity-30 teal-glow-sm flex items-center gap-2">
               {autoPlay ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
               {autoPlay ? 'Pause' : 'Auto-Play'}
             </button>
             <button onClick={() => setMoveIndex(i => Math.min(game.moves.length, i + 1))} disabled={moveIndex >= game.moves.length}
-              className="p-2 rounded-lg border border-border hover:bg-secondary transition-all disabled:opacity-30">
+              className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg border border-border hover:bg-secondary transition-all disabled:opacity-30">
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>

@@ -189,9 +189,9 @@ Write a concise coaching summary (markdown, ~180 words). Cover: what the student
             <ChessBoard game={boardGame} fen={fen} interactive={false} lastMove={lastMove} />
           </div>
           <div className="flex items-center gap-2 mt-3">
-            <button onClick={() => setViewIndex(0)} className="p-2 rounded-lg border border-border hover:bg-secondary"><RotateCcw className="w-4 h-4" /></button>
-            <button onClick={() => setViewIndex(i => Math.max(0, i - 1))} disabled={viewIndex === 0} className="p-2 rounded-lg border border-border hover:bg-secondary disabled:opacity-30"><ChevronLeft className="w-4 h-4" /></button>
-            <button onClick={() => setViewIndex(i => Math.min(a.length, i + 1))} disabled={viewIndex >= a.length} className="p-2 rounded-lg border border-border hover:bg-secondary disabled:opacity-30"><ChevronRight className="w-4 h-4" /></button>
+            <button onClick={() => setViewIndex(0)} className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg border border-border hover:bg-secondary"><RotateCcw className="w-4 h-4" /></button>
+            <button onClick={() => setViewIndex(i => Math.max(0, i - 1))} disabled={viewIndex === 0} className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg border border-border hover:bg-secondary disabled:opacity-30"><ChevronLeft className="w-4 h-4" /></button>
+            <button onClick={() => setViewIndex(i => Math.min(a.length, i + 1))} disabled={viewIndex >= a.length} className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg border border-border hover:bg-secondary disabled:opacity-30"><ChevronRight className="w-4 h-4" /></button>
           </div>
           <div className="mt-1 text-xs text-muted-foreground">Move {viewIndex} of {a.length} · eval {fmtEval(currentEval)}</div>
         </div>

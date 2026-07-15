@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
-import { Crown, TrendingUp, Flame, Brain, Target, Gamepad2, BookOpen, Trophy, Zap } from 'lucide-react';
+import { Crown, TrendingUp, Flame, Brain, Target, Gamepad2, BookOpen, Trophy, Zap, Loader2 } from 'lucide-react';
 import IntroSequence from '@/components/IntroSequence';
 
 export default function Dashboard() {
@@ -11,28 +11,75 @@ export default function Dashboard() {
     try { return sessionStorage.getItem('chessmind_intro_seen') === '1'; } catch { return false; }
   });
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const user = await base44.auth.me();
-        const profiles = await base44.entities.UserProfile.filter({ created_by_id: user.id });
-        if (profiles.length > 0) {
-          setProfile(profiles[0]);
-        } else {
-          const np = await base44.entities.UserProfile.create({
-            elo: 1200, puzzle_rating: 1200, puzzle_streak: 0, longest_streak: 0,
-            total_games: 0, total_puzzles: 0, games_won: 0, games_lost: 0, games_drawn: 0,
-            puzzles_solved: 0, puzzles_failed: 0, accuracy_avg: 0,
-            openings_drilled: 0, endgames_drilled: 0, achievements: [], elo_history: [{ date: new Date().toISOString(), rating: 1200 }]
-          });
-          setProfile(np);
-        }
-      } catch (e) {
-        // allow render without profile
+  const loadProfile = async () => {
+    try {
+      const user = await base44.auth.me();
+      const profiles = await base44.entities.UserProfile.filter({ created_by_id: user.id });
+      if (profiles.length > 0) {
+        setProfile(profiles[0]);
+      } else {
+        const np = await base44.entities.UserProfile.create({
+          elo: 1200, puzzle_rating: 1200, puzzle_streak: 0, longest_streak: 0,
+          total_games: 0, total_puzzles: 0, games_won: 0, games_lost: 0, games_drawn: 0,
+          puzzles_solved: 0, puzzles_failed: 0, accuracy_avg: 0,
+          openings_drilled: 0, endgames_drilled: 0, achievements: [], elo_history: [{ date: new Date().toISOString(), rating: 1200 }]
+        });
+        setProfile(np);
       }
-      setLoading(false);
-    })();
-  }, []);
+    } catch (e) {
+      // allow render without profile
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => { loadProfile(); }, []);
+
+  const [pull, setPull] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
+  const startY = useRef(0);
+  const pulling = useRef(false);
+  const pullRef = useRef(0);
+
+  useEffect(() => {
+    const main = document.querySelector('main');
+    if (!main) return;
+    const onTouchStart = (e) => {
+      if (main.scrollTop <= 0 && !refreshing) {
+        startY.current = e.touches[0].clientY;
+        pulling.current = true;
+      } else {
+        pulling.current = false;
+      }
+    };
+    const onTouchMove = (e) => {
+      if (!pulling.current) return;
+      const delta = e.touches[0].clientY - startY.current;
+      if (delta <= 0) { setPull(0); pullRef.current = 0; return; }
+      const v = Math.min(delta * 0.5, 80);
+      setPull(v);
+      pullRef.current = v;
+      if (main.scrollTop <= 0) e.preventDefault();
+    };
+    const onTouchEnd = () => {
+      if (!pulling.current) return;
+      pulling.current = false;
+      const triggered = pullRef.current > 60;
+      setPull(0);
+      pullRef.current = 0;
+      if (triggered && !refreshing) {
+        setRefreshing(true);
+        loadProfile().finally(() => setRefreshing(false));
+      }
+    };
+    main.addEventListener('touchstart', onTouchStart, { passive: true });
+    main.addEventListener('touchmove', onTouchMove, { passive: false });
+    main.addEventListener('touchend', onTouchEnd);
+    return () => {
+      main.removeEventListener('touchstart', onTouchStart);
+      main.removeEventListener('touchmove', onTouchMove);
+      main.removeEventListener('touchend', onTouchEnd);
+    };
+  }, [refreshing]);
 
   const loadingView = (
     <div className="flex items-center justify-center h-full">
@@ -64,6 +111,9 @@ export default function Dashboard() {
     {!introDone && <IntroSequence onComplete={handleIntroDone} />}
     {loading ? loadingView : (
     <div className="p-6 md:p-8 max-w-6xl mx-auto">
+      <div className="md:hidden flex items-center justify-center overflow-hidden transition-all duration-200" style={{ height: refreshing ? 48 : pull, opacity: pull > 0 || refreshing ? 1 : 0 }}>
+        <Loader2 className={`w-6 h-6 text-primary ${refreshing ? 'animate-spin' : ''}`} style={{ transform: `rotate(${pull * 4}deg)` }} />
+      </div>
       <div className="mb-8 flex flex-col items-center text-center">
         <h1 className="text-3xl md:text-4xl font-bold text-primary teal-text-glow flex items-center gap-3 mb-2">CHESS <Crown className="w-8 h-8 text-primary teal-text-glow" /> MIND</h1>
         <p className="text-sm text-primary teal-text-glow">From the team that brought you Reel Chess — Let's Chess!</p>

@@ -54,7 +54,7 @@ export default function AIChatPanel({ open, onClose }) {
               <p className="text-xs text-muted-foreground italic">definitely knows more than you about chess</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
+          <button onClick={onClose} className="w-11 h-11 flex items-center justify-center text-muted-foreground hover:text-foreground rounded-lg hover:bg-secondary" aria-label="Close">
             <X className="w-5 h-5" />
           </button>
         </div>
