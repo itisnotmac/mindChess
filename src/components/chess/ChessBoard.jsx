@@ -114,12 +114,12 @@ export default function ChessBoard({ game, fen, onMove, orientation = 'white', i
                 `}
               >
                 {ci === 0 && (
-                  <span className={`absolute top-0 left-0.5 text-[10px] font-bold ${isDark ? 'text-[#E8D5B7]' : 'text-[#1A1A2E]'}`}>
+                  <span className={`absolute top-0 left-0.5 text-[10px] font-bold ${isDark ? 'text-[#E8D5B7]' : 'text-card'}`}>
                     {8 - r}
                   </span>
                 )}
                 {ri === 7 && (
-                  <span className={`absolute bottom-0 right-0.5 text-[10px] font-bold ${isDark ? 'text-[#E8D5B7]' : 'text-[#1A1A2E]'}`}>
+                  <span className={`absolute bottom-0 right-0.5 text-[10px] font-bold ${isDark ? 'text-[#E8D5B7]' : 'text-card'}`}>
                     {String.fromCharCode(97 + c)}
                   </span>
                 )}
@@ -130,7 +130,7 @@ export default function ChessBoard({ game, fen, onMove, orientation = 'white', i
                     onDragStart={() => handleDragStart(square)}
                     onDragEnd={() => setDragSquare(null)}
                     className={`text-4xl sm:text-5xl md:text-6xl cursor-grab active:cursor-grabbing transition-transform hover:scale-110
-                      ${piece.color === 'w' ? 'text-white' : 'text-[#4A4A6A]'}
+                      ${piece.color === 'w' ? 'text-white' : 'text-secondary'}
                     `}
                     style={{
                       textShadow: piece.color === 'w'
@@ -143,10 +143,10 @@ export default function ChessBoard({ game, fen, onMove, orientation = 'white', i
                 )}
 
                 {isLegal && !isCapture && (
-                  <div className="absolute w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#00E5CC] opacity-60" />
+                  <div className="absolute w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-ring opacity-60" />
                 )}
                 {isLegal && isCapture && (
-                  <div className="absolute inset-1 rounded-full border-[3px] border-[#00E5CC] opacity-60" />
+                  <div className="absolute inset-1 rounded-full border-[3px] border-ring opacity-60" />
                 )}
               </div>
             );
@@ -161,7 +161,7 @@ export default function ChessBoard({ game, fen, onMove, orientation = 'white', i
               <button
                 key={p}
                 onClick={() => selectPromotion(p)}
-                className={`w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center text-4xl sm:text-5xl bg-secondary hover:bg-primary/20 rounded-lg transition-colors ${turn === 'w' ? 'text-white' : 'text-[#4A4A6A]'}`}
+                className={`w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center text-4xl sm:text-5xl bg-secondary hover:bg-primary/20 rounded-lg transition-colors ${turn === 'w' ? 'text-white' : 'text-secondary'}`}
                 style={{ textShadow: turn === 'w' ? '0 1px 3px rgba(0,0,0,0.6)' : '0 0 5px rgba(232,213,183,0.4), 0 1px 2px rgba(0,0,0,0.5)' }}
               >
                 {PIECE_UNICODE[p]}
