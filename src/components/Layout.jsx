@@ -79,13 +79,13 @@ export default function Layout() {
         })}
       </nav>
 
-      <button onClick={() => setChatOpen(true)}
-        className="md:hidden fixed bottom-20 right-4 w-14 h-14 bg-primary text-primary-foreground rounded-full flex items-center justify-center teal-glow z-40">
-        <MessageSquare className="w-6 h-6" />
-      </button>
       <button onClick={() => setSettingsOpen(true)}
-        className="md:hidden fixed bottom-20 right-20 w-14 h-14 bg-card border border-border text-primary rounded-full flex items-center justify-center teal-glow-sm z-40">
+        className="md:hidden fixed bottom-20 left-4 w-14 h-14 bg-card border border-border text-primary rounded-full flex items-center justify-center teal-glow-sm z-40">
         <Settings className="w-6 h-6" />
+      </button>
+      <button onClick={() => setChatOpen(true)}
+        className="md:hidden fixed bottom-20 left-20 w-14 h-14 bg-primary text-primary-foreground rounded-full flex items-center justify-center teal-glow z-40">
+        <MessageSquare className="w-6 h-6" />
       </button>
 
       <AIChatPanel open={chatOpen} onClose={() => setChatOpen(false)} />
