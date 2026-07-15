@@ -24,9 +24,9 @@ export default function Dashboard() {
           setProfile(np);
         }
       } catch (e) {
-
         // allow render without profile
-      }setLoading(false);
+      }
+      setLoading(false);
     })();
   }, []);
 
@@ -34,23 +34,23 @@ export default function Dashboard() {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
-      </div>);
-
+      </div>
+    );
   }
 
   const modules = [
-  { to: '/play', icon: Gamepad2, title: 'Play vs AI', desc: '5 difficulty levels with live coaching', color: "text-[hsl(var(--chart-2))]" },
-  { to: '/tactics', icon: Brain, title: 'Tactics Trainer', desc: 'Solve puzzles, build streaks, climb ratings', color: "text-[hsl(var(--chart-2))]" },
-  { to: '/openings', icon: BookOpen, title: 'Opening Explorer', desc: 'Study & drill major openings', color: "text-[hsl(var(--chart-2))]" },
-  { to: '/endgames', icon: Target, title: 'Endgame Lab', desc: 'Master critical endgame techniques', color: "text-[hsl(var(--chart-2))]" }];
-
+    { to: '/play', icon: Gamepad2, title: 'Play vs AI', desc: '5 difficulty levels with live coaching', color: 'text-primary' },
+    { to: '/tactics', icon: Brain, title: 'Tactics Trainer', desc: 'Solve puzzles, build streaks, climb ratings', color: 'text-[#39FF14]' },
+    { to: '/openings', icon: BookOpen, title: 'Opening Explorer', desc: 'Study & drill major openings', color: 'text-[#FFB300]' },
+    { to: '/endgames', icon: Target, title: 'Endgame Lab', desc: 'Master critical endgame techniques', color: 'text-destructive' },
+  ];
 
   const stats = [
-  { icon: TrendingUp, label: 'ELO Rating', value: profile?.elo || 1200, color: 'text-primary' },
-  { icon: Flame, label: 'Puzzle Streak', value: profile?.puzzle_streak || 0, color: 'text-[#FFB300]' },
-  { icon: Gamepad2, label: 'Games Played', value: profile?.total_games || 0, color: 'text-[#39FF14]' },
-  { icon: Brain, label: 'Puzzles Solved', value: profile?.puzzles_solved || 0, color: 'text-[#FF4757]' }];
-
+    { icon: TrendingUp, label: 'ELO Rating', value: profile?.elo || 1200, color: 'text-primary' },
+    { icon: Flame, label: 'Puzzle Streak', value: profile?.puzzle_streak || 0, color: 'text-[#FFB300]' },
+    { icon: Gamepad2, label: 'Games Played', value: profile?.total_games || 0, color: 'text-[#39FF14]' },
+    { icon: Brain, label: 'Puzzles Solved', value: profile?.puzzles_solved || 0, color: 'text-destructive' },
+  ];
 
   return (
     <div className="p-6 md:p-8 max-w-6xl mx-auto">
@@ -60,41 +60,41 @@ export default function Dashboard() {
       </div>
 
       <div className="flex items-center justify-center gap-6 md:gap-8 mb-8">
-        {stats.map((s, i) =>
-        <div key={i} className="flex items-center gap-2">
+        {stats.map((s, i) => (
+          <div key={i} className="flex items-center gap-2">
             <s.icon className={`w-5 h-5 ${s.color}`} />
             <span className="text-xl font-bold">{s.value}</span>
           </div>
-        )}
+        ))}
       </div>
 
       <h2 className="text-xl font-bold mb-4 text-primary teal-text-glow text-center">Training Modules</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {modules.map((m, i) =>
-        <Link key={i} to={m.to} onClick={() => base44.analytics.track({ eventName: 'training_module_click', properties: { module: m.title } })} className="group flex flex-col items-center gap-2 p-2 transition-all">
+        {modules.map((m, i) => (
+          <Link key={i} to={m.to} onClick={() => base44.analytics.track({ eventName: 'training_module_click', properties: { module: m.title } })} className="group flex flex-col items-center gap-2 p-2 transition-all">
             <div className={`p-4 rounded-full bg-card border border-border group-hover:border-primary/50 group-hover:teal-glow-sm transition-all`}>
               <m.icon className={`w-12 h-12 md:w-14 md:h-14 ${m.color} group-hover:scale-110 transition-transform`} />
             </div>
             <h3 className="text-xs md:text-sm font-bold text-center">{m.title}</h3>
           </Link>
-        )}
+        ))}
       </div>
 
-      {profile?.achievements && profile.achievements.length > 0 &&
-      <>
+      {profile?.achievements && profile.achievements.length > 0 && (
+        <>
           <h2 className="text-lg font-bold mb-4 text-foreground flex items-center gap-2">
             <Trophy className="w-5 h-5 text-[#FFB300]" /> Achievements
           </h2>
           <div className="flex flex-wrap gap-3">
-            {profile.achievements.map((a, i) =>
-          <div key={i} className="bg-card border border-[#FFB300]/30 rounded-lg px-4 py-2 flex items-center gap-2">
+            {profile.achievements.map((a, i) => (
+              <div key={i} className="bg-card border border-[#FFB300]/30 rounded-lg px-4 py-2 flex items-center gap-2">
                 <Zap className="w-4 h-4 text-[#FFB300]" />
                 <span className="text-sm font-medium">{a}</span>
               </div>
-          )}
+            ))}
           </div>
         </>
-      }
-    </div>);
-
+      )}
+    </div>
+  );
 }
