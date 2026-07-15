@@ -53,6 +53,17 @@
     @apply bg-background text-foreground font-body;
     background-color: #0D0D14;
   }
+
+  html, body, main {
+    overscroll-behavior: none;
+  }
+
+  button, h1, h2, h3, h4, h5, h6, nav a, [role="menuitem"], [role="tab"],
+  .board-dark, .board-light {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
 @layer utilities {

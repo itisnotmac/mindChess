@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Gamepad2, Brain, BookOpen, Target, User, Crown, MessageSquare, Settings, Library, Microscope, GraduationCap } from 'lucide-react';
 import AIChatPanel from '@/components/AIChatPanel';
+import { motion, AnimatePresence } from 'framer-motion';
 import { SettingsProvider } from '@/lib/SettingsContext';
 import SettingsDialog from '@/components/SettingsDialog';
 
@@ -27,7 +28,7 @@ export default function Layout() {
   return (
   <SettingsProvider>
   <div className="flex flex-col h-screen bg-background overflow-hidden">
-      <header className="md:hidden shrink-0 flex items-center justify-between px-4 py-2 bg-sidebar border-b border-sidebar-border">
+      <header className="md:hidden shrink-0 flex items-center justify-between px-4 py-2 bg-sidebar border-b border-sidebar-border" style={{ paddingTop: 'calc(env(safe-area-inset-top) + 0.5rem)' }}>
         <Link to="/" className="flex items-center gap-2">
           <Crown className="w-6 h-6 text-primary teal-text-glow" />
           <span className="text-lg font-bold text-primary teal-text-glow">Chess Mind</span>
@@ -78,11 +79,22 @@ export default function Layout() {
       </aside>
 
       <main className="flex-1 overflow-auto pb-20 md:pb-0">
-        <Outlet />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -24 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="h-full"
+          >
+            <Outlet />
+          </motion.div>
+        </AnimatePresence>
       </main>
       </div>
 
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-sidebar border-t border-sidebar-border flex justify-around py-2 z-40">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-sidebar border-t border-sidebar-border flex justify-around py-2 z-40" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 0.5rem)' }}>
         {NAV_ITEMS.map(item => {
           const active = location.pathname === item.to;
           return (

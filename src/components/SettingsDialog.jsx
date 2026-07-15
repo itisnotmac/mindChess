@@ -3,12 +3,29 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup, SelectLabel } from '@/components/ui/select';
 import { useSettings } from '@/lib/SettingsContext';
-import { Volume2, Play } from 'lucide-react';
+import { Volume2, Play, Trash2 } from 'lucide-react';
 import { getAvailableVoices, guessGender, getAccent, speak } from '@/lib/tts';
+import { base44 } from '@/api/base44Client';
+import {
+  AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader,
+  AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel
+} from '@/components/ui/alert-dialog';
 
 export default function SettingsDialog({ open, onClose }) {
   const { ttsEnabled, setTtsEnabled, voiceURI, setVoiceURI } = useSettings();
   const [voices, setVoices] = useState([]);
+  const [deleting, setDeleting] = useState(false);
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    try {
+      await base44.functions.invoke('deleteAccount', {});
+      await base44.auth.logout('/login');
+    } catch (e) {
+      setDeleting(false);
+      alert('Could not delete your account: ' + (e?.message || 'unknown error'));
+    }
+  };
 
   useEffect(() => {
     if (open) {
@@ -82,6 +99,30 @@ export default function SettingsDialog({ open, onClose }) {
             </button>
           </div>
         )}
+
+        <div className="border-t border-border pt-4 mt-4">
+          <h3 className="text-sm font-bold text-destructive mb-1">Danger Zone</h3>
+          <p className="text-xs text-muted-foreground mb-3">Permanently delete your account and all associated data. This cannot be undone.</p>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-destructive/40 text-destructive rounded-lg hover:bg-destructive/10 transition-all text-sm font-medium">
+                <Trash2 className="w-4 h-4" /> Delete Account
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="bg-card border-destructive/30">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete your account?</AlertDialogTitle>
+                <AlertDialogDescription>This will permanently erase your profile, stats, and game history. This action cannot be undone.</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDelete} disabled={deleting} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                  {deleting ? 'Deleting…' : 'Yes, delete my account'}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </DialogContent>
     </Dialog>
   );
