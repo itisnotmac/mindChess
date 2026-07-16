@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import ChessBoard from '@/components/chess/ChessBoard';
 import { createGame, makeMove, getFen, getTurn, isCheckmate, isDraw, isStalemate, isCheck, isGameOver, getAIMoveAsync } from '@/lib/chessEngine';
@@ -33,6 +33,7 @@ export default function PlayVsAI() {
   const [eloChange, setEloChange] = useState(0);
   const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
+  const commentaryRef = useRef(null);
 
   const game = useMemo(() => createGame(fen), [fen]);
   const orientation = playerColor;
@@ -47,6 +48,12 @@ export default function PlayVsAI() {
       } catch (e) {}
     })();
   }, []);
+
+  useEffect(() => {
+    if (commentaryRef.current) {
+      commentaryRef.current.scrollTop = commentaryRef.current.scrollHeight;
+    }
+  }, [commentary]);
 
   const fetchCommentary = useCallback(async (currentFen, moveList, lastMoveSan) => {
     try {
@@ -232,7 +239,7 @@ export default function PlayVsAI() {
             <h3 className="font-bold mb-2 text-sm text-muted-foreground uppercase tracking-wide flex items-center gap-2">
               <Bot className="w-4 h-4 text-primary" /> Coach Commentary
             </h3>
-            <div className="space-y-2 max-h-48 overflow-y-auto scrollbar-thin">
+            <div ref={commentaryRef} className="space-y-2 max-h-48 overflow-y-auto scrollbar-thin">
               {commentary.length === 0 ? <p className="text-muted-foreground text-xs">Live commentary appears here as you play...</p> :
                 commentary.map((c, i) => (
                   <p key={i} className="text-xs text-foreground/90 bg-secondary/50 rounded p-2">{c.text}</p>
