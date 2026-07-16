@@ -290,8 +290,8 @@ export function getBestMove(game, depth) {
 export function loadPgnGame(pgn) {
   try {
     const g = new Chess();
-    const ok = g.loadPgn(pgn);
-    return ok ? g : null;
+    g.loadPgn(pgn);
+    return g.history().length > 0 ? g : null;
   } catch {
     return null;
   }
