@@ -8,6 +8,7 @@ import { Microscope, Loader2, ArrowLeft, ChevronLeft, ChevronRight, RotateCcw, W
 import ReactMarkdown from 'react-markdown';
 import ReadAloudButton from '@/components/ReadAloudButton';
 import MobileSelect from '@/components/MobileSelect';
+import { useLocation } from 'react-router-dom';
 
 const DEPTH = 3;
 
@@ -41,11 +42,12 @@ export default function AnalyzeGame() {
   const [narrativeLoading, setNarrativeLoading] = useState(false);
   const [error, setError] = useState('');
   const [viewIndex, setViewIndex] = useState(0);
+  const location = useLocation();
 
-  const runAnalysis = () => {
+  const runAnalysis = (pgnText = pgn, sideText = side) => {
     setError('');
-    const g = loadPgnGame(pgn);
-    if (!g) { setError('Could not parse that PGN. Check the format and try again.'); return; }
+    const g = loadPgnGame(pgnText);
+    if (!g) { setError('Could not read those moves. Check the format and try again.'); return; }
     setPhase('analyzing');
     setTimeout(() => {
       const verbose = g.history({ verbose: true });
@@ -80,7 +82,7 @@ export default function AnalyzeGame() {
       setViewIndex(verbose.length);
       setPhase('review');
       base44.analytics.track({ eventName: 'analyze_game', properties: { plies: verbose.length, blunders: keyMoments.filter(m => m.quality === 'blunder').length } });
-      fetchNarrative(pgn, result, side, keyMoments);
+      fetchNarrative(pgnText, result, sideText, keyMoments);
     }, 50);
   };
 
@@ -109,6 +111,14 @@ Write a concise coaching summary (markdown, ~180 words). Cover: what the student
     setPhase('input'); setAnalysis(null); setNarrative(''); setError(''); setPgn('');
   };
 
+  useEffect(() => {
+    if (location.state?.pgn) {
+      setPgn(location.state.pgn);
+      if (location.state?.side) setSide(location.state.side);
+      runAnalysis(location.state.pgn, location.state.side || 'white');
+    }
+  }, []);
+
   if (phase === 'input') {
     return (
       <div className="p-6 md:p-8 max-w-2xl mx-auto">
@@ -120,10 +130,12 @@ Write a concise coaching summary (markdown, ~180 words). Cover: what the student
           <h1 className="text-3xl font-bold">Analyze My Game</h1>
         </div>
         <p className="text-sm text-muted-foreground mb-6">
-          Paste a PGN of your game and get a move-by-move review: an evaluation graph, quality
-          badges, best-move suggestions on mistakes, and a coach's written summary.
+          Paste your game's move list — that long string of chess moves you can copy from most
+          chess apps — and get a move-by-move review: an evaluation graph, quality badges,
+          best-move suggestions on mistakes, and a coach's written summary.
         </p>
-        <textarea value={pgn} onChange={e => setPgn(e.target.value)} rows={8}
+        <label htmlFor="pgn-input" className="text-xs text-muted-foreground uppercase tracking-wide mb-1.5 block">Your game's moves</label>
+        <textarea id="pgn-input" value={pgn} onChange={e => setPgn(e.target.value)} rows={8}
           placeholder="1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 ..."
           className="w-full bg-card border border-border rounded-lg p-3 font-mono text-sm focus:outline-none focus:border-primary teal-border-glow resize-y" />
         <div className="flex flex-col sm:flex-row gap-3 mt-3">
@@ -141,7 +153,7 @@ Write a concise coaching summary (markdown, ~180 words). Cover: what the student
           <button onClick={() => setPgn(SAMPLE)} className="text-xs text-primary hover:underline ml-auto">Load sample game</button>
         </div>
         {error && <p className="text-sm text-destructive mt-3">{error}</p>}
-        <button onClick={runAnalysis} disabled={!pgn.trim()}
+        <button onClick={() => runAnalysis()} disabled={!pgn.trim()}
           className="w-full mt-4 bg-primary text-primary-foreground py-3 rounded-lg font-bold text-lg hover:bg-primary/90 transition-all teal-glow disabled:opacity-50 flex items-center justify-center gap-2">
           <Microscope className="w-5 h-5" /> Analyze Game
         </button>

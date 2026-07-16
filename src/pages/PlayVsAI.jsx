@@ -4,6 +4,7 @@ import ChessBoard from '@/components/chess/ChessBoard';
 import { createGame, makeMove, getFen, getTurn, isCheckmate, isDraw, isStalemate, isCheck, isGameOver, getAIMoveAsync } from '@/lib/chessEngine';
 import { playSound } from '@/lib/sound';
 import { Gamepad2, RotateCcw, ArrowLeft, Bot, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const DIFFICULTIES = [
   { value: 'beginner', label: 'Beginner', rating: 800, desc: 'Random moves' },
@@ -31,6 +32,7 @@ export default function PlayVsAI() {
   const [gameResult, setGameResult] = useState(null);
   const [eloChange, setEloChange] = useState(0);
   const [profile, setProfile] = useState(null);
+  const navigate = useNavigate();
 
   const game = useMemo(() => createGame(fen), [fen]);
   const orientation = playerColor;
@@ -137,6 +139,19 @@ export default function PlayVsAI() {
       setTimeout(() => makeAIMove(newFen, difficulty, newMoves), 300);
     }
     return true;
+  };
+
+  const analyzeGame = () => {
+    let resultStr = '1/2-1/2';
+    if (gameResult === 'win') resultStr = playerColor === 'white' ? '1-0' : '0-1';
+    else if (gameResult === 'loss') resultStr = playerColor === 'white' ? '0-1' : '1-0';
+    let pgn = '';
+    for (let i = 0; i < moves.length; i++) {
+      if (i % 2 === 0) pgn += `${Math.floor(i / 2) + 1}. `;
+      pgn += moves[i] + ' ';
+    }
+    pgn += resultStr;
+    navigate('/analyze', { state: { pgn, side: playerColor } });
   };
 
   if (phase === 'setup') {
@@ -252,14 +267,18 @@ export default function PlayVsAI() {
                 </span>
               </div>
             )}
-            <div className="flex gap-3">
+            <div className="flex flex-col gap-3">
               <button onClick={() => startGame(difficulty, playerColor)}
-                className="flex-1 bg-primary text-primary-foreground py-2.5 rounded-lg font-medium hover:bg-primary/90 transition-all">
-                Play Again
+                className="w-full bg-primary text-primary-foreground py-3 rounded-lg font-bold hover:bg-primary/90 transition-all teal-glow-sm">
+                Rematch
+              </button>
+              <button onClick={analyzeGame}
+                className="w-full border border-primary/40 text-primary py-2.5 rounded-lg font-medium hover:bg-primary/10 transition-all">
+                Analyze Game
               </button>
               <button onClick={() => setPhase('setup')}
-                className="flex-1 border border-border py-2.5 rounded-lg font-medium hover:bg-secondary transition-all">
-                New Setup
+                className="w-full border border-border py-2.5 rounded-lg font-medium hover:bg-secondary transition-all">
+                Return to Lobby
               </button>
             </div>
           </div>
