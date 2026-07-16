@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Gamepad2, Brain, BookOpen, Target, User, Crown, MessageSquare, Settings, Library, Microscope, GraduationCap, ChevronLeft, Menu as MenuIcon } from 'lucide-react';
 import AIChatPanel from '@/components/AIChatPanel';
@@ -42,6 +42,21 @@ function getRouteMeta(path) {
   return { title: 'Chess Mind', back: false };
 }
 
+const NAV_ROOTS = [...CORE_TABS, ...SECONDARY].map(i => i.to);
+
+function rootOf(path) {
+  if (path === '/') return '/';
+  for (const r of NAV_ROOTS) {
+    if (r !== '/' && (path === r || path.startsWith(r + '/'))) return r;
+  }
+  return null;
+}
+
+function isInTab(path, root) {
+  if (root === '/') return path === '/';
+  return path === root || path.startsWith(root + '/');
+}
+
 export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -50,6 +65,32 @@ export default function Layout() {
   const [chatOpen, setChatOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [tabMemory, setTabMemory] = useState({});
+
+  useEffect(() => {
+    const r = rootOf(path);
+    if (!r) return;
+    if (path === r) {
+      setTabMemory(prev => (prev[r] ? { ...prev, [r]: undefined } : prev));
+    } else {
+      setTabMemory(prev => ({ ...prev, [r]: path }));
+    }
+  }, [path]);
+
+  const handleTabClick = (root) => (e) => {
+    const active = isInTab(path, root);
+    if (active) {
+      e.preventDefault();
+      setTabMemory(prev => ({ ...prev, [root]: undefined }));
+      navigate(root);
+      return;
+    }
+    const remembered = tabMemory[root];
+    if (remembered) {
+      e.preventDefault();
+      navigate(remembered);
+    }
+  };
 
   return (
   <SettingsProvider>
@@ -135,7 +176,7 @@ export default function Layout() {
         {CORE_TABS.map(item => {
           const active = item.to === '/' ? path === '/' : path.startsWith(item.to);
           return (
-            <Link key={item.to} to={item.to}
+            <Link key={item.to} to={item.to} onClick={handleTabClick(item.to)}
               className={`flex flex-col items-center justify-center gap-0.5 min-h-[44px] px-2 flex-1 ${active ? 'text-primary' : 'text-muted-foreground'}`}>
               <item.icon className="w-5 h-5" />
               <span className="text-[10px] font-medium">{item.label}</span>
@@ -153,7 +194,7 @@ export default function Layout() {
             {SECONDARY.map(item => {
               const active = path.startsWith(item.to);
               return (
-                <Link key={item.to} to={item.to} onClick={() => setMenuOpen(false)}
+                <Link key={item.to} to={item.to} onClick={(e) => { setMenuOpen(false); handleTabClick(item.to)(e); }}
                   className={`flex items-center gap-3 px-3 py-3 rounded-lg min-h-[44px] ${active ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-secondary hover:text-foreground'}`}>
                   <item.icon className="w-5 h-5" />
                   <span className="font-medium">{item.label}</span>

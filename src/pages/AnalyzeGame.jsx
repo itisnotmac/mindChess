@@ -7,7 +7,7 @@ import { LineChart, Line, XAxis, YAxis, ReferenceLine, ResponsiveContainer, Tool
 import { Microscope, Loader2, ArrowLeft, ChevronLeft, ChevronRight, RotateCcw, Wand2, AlertTriangle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import ReadAloudButton from '@/components/ReadAloudButton';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import MobileSelect from '@/components/MobileSelect';
 
 const DEPTH = 3;
 
@@ -129,15 +129,14 @@ Write a concise coaching summary (markdown, ~180 words). Cover: what the student
         <div className="flex flex-col sm:flex-row gap-3 mt-3">
           <div className="flex items-center gap-2">
             <label className="text-xs text-muted-foreground uppercase">You played</label>
-            <Select value={side} onValueChange={setSide}>
-              <SelectTrigger className="w-28 bg-card border-border rounded-lg px-2 py-1.5 text-sm focus:border-primary">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="white">White</SelectItem>
-                <SelectItem value="black">Black</SelectItem>
-              </SelectContent>
-            </Select>
+            <MobileSelect
+              value={side}
+              onChange={setSide}
+              placeholder="You played"
+              title="Side"
+              triggerClassName="w-28 bg-card border-border rounded-lg px-2 py-1.5 text-sm focus:border-primary"
+              options={[{ value: 'white', label: 'White' }, { value: 'black', label: 'Black' }]}
+            />
           </div>
           <button onClick={() => setPgn(SAMPLE)} className="text-xs text-primary hover:underline ml-auto">Load sample game</button>
         </div>

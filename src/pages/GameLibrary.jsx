@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { MASTER_GAMES, CATEGORIES, DIFFICULTIES } from '@/lib/masterGames';
 import { Library, Search, ChevronRight, Calendar } from 'lucide-react';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import MobileSelect from '@/components/MobileSelect';
 
 const DIFFICULTY_COLOR = {
   beginner: 'text-[#39FF14] border-[#39FF14]/30 bg-[#39FF14]/10',
@@ -50,24 +50,22 @@ export default function GameLibrary() {
             className="w-full pl-9 pr-3 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:border-primary teal-border-glow"
           />
         </div>
-        <Select value={category} onValueChange={setCategory}>
-          <SelectTrigger className="w-auto bg-card border-border rounded-lg px-3 py-2 text-sm focus:border-primary teal-border-glow">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All categories</SelectItem>
-            {CATEGORIES.map(c => <SelectItem key={c.id} value={c.id}>{c.label}</SelectItem>)}
-          </SelectContent>
-        </Select>
-        <Select value={difficulty} onValueChange={setDifficulty}>
-          <SelectTrigger className="w-auto bg-card border-border rounded-lg px-3 py-2 text-sm focus:border-primary teal-border-glow">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All levels</SelectItem>
-            {DIFFICULTIES.map(d => <SelectItem key={d.id} value={d.id}>{d.label}</SelectItem>)}
-          </SelectContent>
-        </Select>
+        <MobileSelect
+          value={category}
+          onChange={setCategory}
+          placeholder="All categories"
+          title="Category"
+          triggerClassName="w-auto bg-card border-border rounded-lg px-3 py-2 text-sm focus:border-primary teal-border-glow"
+          options={[{ value: 'all', label: 'All categories' }, ...CATEGORIES.map(c => ({ value: c.id, label: c.label }))]}
+        />
+        <MobileSelect
+          value={difficulty}
+          onChange={setDifficulty}
+          placeholder="All levels"
+          title="Level"
+          triggerClassName="w-auto bg-card border-border rounded-lg px-3 py-2 text-sm focus:border-primary teal-border-glow"
+          options={[{ value: 'all', label: 'All levels' }, ...DIFFICULTIES.map(d => ({ value: d.id, label: d.label }))]}
+        />
       </div>
 
       {filtered.length === 0 ? (
