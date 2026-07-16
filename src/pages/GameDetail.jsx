@@ -5,12 +5,14 @@ import { createGame, makeSanMove } from '@/lib/chessEngine';
 import { MASTER_GAMES, CATEGORIES } from '@/lib/masterGames';
 import { ChevronLeft, ChevronRight, RotateCcw, Play, Pause, ArrowLeft, BookOpen } from 'lucide-react';
 import ReadAloudButton from '@/components/ReadAloudButton';
+import { Slider } from '@/components/ui/slider';
 
 export default function GameDetail() {
   const { id } = useParams();
   const game = MASTER_GAMES.find(g => g.id === id);
   const [moveIndex, setMoveIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(false);
+  const [speed, setSpeed] = useState(0.5);
 
   useEffect(() => {
     setMoveIndex(0);
@@ -38,11 +40,11 @@ export default function GameDetail() {
 
   useEffect(() => {
     if (autoPlay && game && moveIndex < game.moves.length) {
-      const timer = setTimeout(() => setMoveIndex(i => i + 1), 1300);
+      const timer = setTimeout(() => setMoveIndex(i => i + 1), Math.round(1300 / speed));
       return () => clearTimeout(timer);
     }
     if (autoPlay && game && moveIndex >= game.moves.length) setAutoPlay(false);
-  }, [autoPlay, moveIndex, game]);
+  }, [autoPlay, moveIndex, game, speed]);
 
   if (!game) {
     return (
@@ -105,6 +107,11 @@ export default function GameDetail() {
               className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg border border-border hover:bg-secondary transition-all disabled:opacity-30">
               <ChevronRight className="w-4 h-4" />
             </button>
+          </div>
+          <div className="flex items-center gap-3 mt-3 w-full max-w-xs">
+            <span className="text-xs text-muted-foreground shrink-0">Speed</span>
+            <Slider value={[speed]} onValueChange={(v) => setSpeed(v[0])} min={0.25} max={2} step={0.25} className="flex-1" />
+            <span className="text-xs text-muted-foreground w-12 text-right tabular-nums">{speed}x</span>
           </div>
           <div className="mt-2 text-sm text-muted-foreground">
             {moveIndex === 0 ? 'Starting position' : `${moveNum}.${isWhite ? '' : '..'}${currentMove}`} · Move {moveIndex} of {game.moves.length}
