@@ -7,11 +7,11 @@ import { Gamepad2, RotateCcw, ArrowLeft, Bot, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const DIFFICULTIES = [
-  { value: 'beginner', label: 'Beginner', rating: 800, desc: 'Random moves' },
-  { value: 'easy', label: 'Easy', rating: 1000, desc: '1-ply search' },
-  { value: 'intermediate', label: 'Intermediate', rating: 1200, desc: '2-ply search' },
-  { value: 'advanced', label: 'Advanced', rating: 1500, desc: '3-ply search' },
-  { value: 'master', label: 'Master', rating: 1800, desc: '4-ply search' },
+  { value: 'beginner', label: 'Yellow Belt', rating: 800, desc: 'Random moves' },
+  { value: 'easy', label: 'Tough Guy', rating: 1000, desc: '1-ply search' },
+  { value: 'intermediate', label: 'Getting Serious', rating: 1200, desc: '2-ply search' },
+  { value: 'advanced', label: 'Brick Top', rating: 1500, desc: '3-ply search' },
+  { value: 'master', label: 'Final Boss', rating: 1800, desc: '4-ply search' },
 ];
 
 function calcElo(playerElo, aiElo, result) {
