@@ -89,7 +89,7 @@ export default function AnalyzeGame() {
     try {
       const momentList = moments.slice(0, 6).map(m =>
         `Move ${m.ply} (${m.side}): played ${m.san}, better was ${m.bestSan} (swing ${fmtEval(-m.loss)} for ${m.side}).`).join('\n');
-      const prompt = `You are Chess Mind, an elite, warm, encouraging chess coach. Review this game.
+      const prompt = `You are Mind Chess, an elite, warm, encouraging chess coach. Review this game.
 PGN: ${pgnText}
 Result: ${result}
 The student played ${playerSide}.

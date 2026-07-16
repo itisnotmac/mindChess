@@ -18,7 +18,7 @@ export default function Contact() {
     }
     setError('');
     base44.analytics.track({ eventName: 'contact_form_submit', properties: { length: message.length } });
-    const subject = encodeURIComponent(`Chess Mind contact from ${name}`);
+    const subject = encodeURIComponent(`Mind Chess contact from ${name}`);
     const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
     window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
   };

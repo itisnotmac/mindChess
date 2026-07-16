@@ -49,7 +49,7 @@ export default function SettingsDialog({ open, onClose }) {
       <DialogContent className="bg-card border-border max-w-md">
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
-          <DialogDescription>Customize your Chess Mind experience.</DialogDescription>
+          <DialogDescription>Customize your Mind Chess experience.</DialogDescription>
         </DialogHeader>
         <div className="flex items-center justify-between py-3">
           <div className="flex items-center gap-3">

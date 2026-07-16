@@ -275,7 +275,7 @@ export default function IntroSequence({ onComplete }) {
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-background">
           <div className="flex items-center gap-3 mb-3">
             <Crown className="w-12 h-12 text-primary teal-text-glow animate-pulse" />
-            <h1 className="text-4xl md:text-5xl font-bold text-primary teal-text-glow">CHESS MIND</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-primary teal-text-glow">MIND CHESS</h1>
           </div>
           <p className="text-sm text-muted-foreground italic mb-8">Let&apos;s Chess!</p>
           <div className="w-40 h-1 bg-secondary rounded-full overflow-hidden">

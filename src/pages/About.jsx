@@ -6,13 +6,13 @@ export default function About() {
     <div className="p-6 md:p-10 max-w-3xl mx-auto">
       <div className="flex items-center gap-3 mb-6">
         <Crown className="w-8 h-8 text-primary teal-text-glow" />
-        <h1 className="text-3xl md:text-4xl font-bold text-primary teal-text-glow">About Chess Mind</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-primary teal-text-glow">About Mind Chess</h1>
       </div>
 
       <div className="space-y-5 text-foreground/90 leading-relaxed">
         <p>
-          Chess Mind is a dedicated chess training platform built for players who want to improve through
-          focused, deliberate practice. From the team that brought you <em>Reel Chess</em>, Chess Mind brings
+          Mind Chess is a dedicated chess training platform built for players who want to improve through
+          focused, deliberate practice. From the team that brought you <em>Reel Chess</em>, Mind Chess brings
           the same love of the game into a structured learning environment. Whether you are picking up the
           pieces for the first time or sharpening your tactics before a tournament, every module is designed
           to make real improvement feel natural and rewarding.
@@ -30,7 +30,7 @@ export default function About() {
         </p>
 
         <p>
-          Chess Mind is for anyone who wants to get better at chess — club players, casual enthusiasts, and
+          Mind Chess is for anyone who wants to get better at chess — club players, casual enthusiasts, and
           ambitious improvers alike. We believe great chess instruction should explain the ideas behind the
           moves, track your progress honestly, and never waste your time with broken or unclear material.
           That commitment to quality is why every puzzle in our database is validated by a real chess engine
@@ -38,7 +38,7 @@ export default function About() {
         </p>
 
         <p>
-          Chess Mind is built by a small, independent team that lives and breathes chess. We are constantly
+          Mind Chess is built by a small, independent team that lives and breathes chess. We are constantly
           expanding the curriculum, adding new puzzles, and refining the coaching experience. Your progress,
           your streaks, and your rating all live in one place — so you can see exactly how far you have come
           and what to study next. We are just getting started, and we would love for you to grow with us.

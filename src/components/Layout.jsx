@@ -27,7 +27,7 @@ const SECONDARY = [
 const SIDEBAR_ITEMS = [...CORE_TABS, ...SECONDARY];
 
 function getRouteMeta(path) {
-  if (path === '/') return { title: 'Chess Mind', back: false };
+  if (path === '/') return { title: 'Mind Chess', back: false };
   if (path.startsWith('/library/')) return { title: 'Game', back: true };
   if (path.startsWith('/learn')) return { title: 'Learn', back: false };
   if (path.startsWith('/play')) return { title: 'Play', back: false };
@@ -39,7 +39,7 @@ function getRouteMeta(path) {
   if (path.startsWith('/profile')) return { title: 'Profile', back: false };
   if (path.startsWith('/about')) return { title: 'About', back: false };
   if (path.startsWith('/contact')) return { title: 'Contact', back: false };
-  return { title: 'Chess Mind', back: false };
+  return { title: 'Mind Chess', back: false };
 }
 
 const NAV_ROOTS = [...CORE_TABS, ...SECONDARY].map(i => i.to);
@@ -125,7 +125,7 @@ export default function Layout() {
         <div className="p-6">
           <Link to="/" className="flex items-center gap-2">
             <Crown className="w-8 h-8 text-primary teal-text-glow" />
-            <span className="text-2xl font-bold text-primary teal-text-glow">Chess Mind</span>
+            <span className="text-2xl font-bold text-primary teal-text-glow">Mind Chess</span>
           </Link>
           <p className="text-xs text-muted-foreground mt-1 ml-10 italic">Let's Chess!</p>
         </div>

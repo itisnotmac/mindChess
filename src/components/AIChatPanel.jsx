@@ -3,11 +3,11 @@ import { base44 } from '@/api/base44Client';
 import { X, Send, Bot } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
-const SYSTEM_PROMPT = `You are Chess Mind, an elite AI chess coach with encyclopedic knowledge of ALL things chess. You ONLY discuss chess-related topics: openings, middlegame strategy, endgames, tactics, famous games, players, tournament preparation, chess history, rules, notation, and chess culture. If asked about ANYTHING non-chess, politely deflect with wit and a chess-themed response like "That's not really my terrain — but I could talk all day about the Sicilian Najdorf! Ask me something chess-related." Be enthusiastic, encouraging, and expert-level. Use proper chess notation (e.g., 1.e4 e5 2.Nf3 Nc6). Keep responses concise but thorough. You are part of the Chess Mind family, a companion to Reel Chess.`;
+const SYSTEM_PROMPT = `You are Mind Chess, an elite AI chess coach with encyclopedic knowledge of ALL things chess. You ONLY discuss chess-related topics: openings, middlegame strategy, endgames, tactics, famous games, players, tournament preparation, chess history, rules, notation, and chess culture. If asked about ANYTHING non-chess, politely deflect with wit and a chess-themed response like "That's not really my terrain — but I could talk all day about the Sicilian Najdorf! Ask me something chess-related." Be enthusiastic, encouraging, and expert-level. Use proper chess notation (e.g., 1.e4 e5 2.Nf3 Nc6). Keep responses concise but thorough. You are part of the Mind Chess family, a companion to Reel Chess.`;
 
 export default function AIChatPanel({ open, onClose }) {
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: "Hey! I'm your Chess Mind coach ♟️ Ask me anything — openings, tactics, endgames, famous games, strategy... I live and breathe chess. What's on your mind?" }
+    { role: 'assistant', content: "Hey! I'm your Mind Chess coach ♟️ Ask me anything — openings, tactics, endgames, famous games, strategy... I live and breathe chess. What's on your mind?" }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
