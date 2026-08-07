@@ -15,7 +15,10 @@ export default function About() {
           focused, deliberate practice. From the team that brought you <em>Reel Chess</em>, Mind Chess brings
           the same love of the game into a structured learning environment. Whether you are picking up the
           pieces for the first time or sharpening your tactics before a tournament, every module is designed
-          to make real improvement feel natural and rewarding.
+          to make real improvement feel natural and rewarding. We are just getting started but our vision is
+          to one day be the internet's most robust collection of Chess training and knowledge. THE place to 
+          come if you want to learn about the game or hone your skills. We hope you come along with us on our
+          journey to make it to where we want to be. 
         </p>
 
         <p>
