@@ -22,7 +22,7 @@ export default function About() {
         </p>
 
         <p>
-          The app is built around four core training modules. <strong className="text-primary"> Play vs AI </strong> 
+          The app is built around several core training modules. <strong className="text-primary"> Play vs AI </strong> 
           lets you test your skills against five difficulty levels, each paired with live coaching feedback so
           every game becomes a lesson. The <strong className="text-primary"> Tactics Trainer </strong> serves
           verified, engine-checked puzzles across forks, pins, skewers, discovered attacks, and mating
