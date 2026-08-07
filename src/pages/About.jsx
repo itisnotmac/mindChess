@@ -19,15 +19,15 @@ export default function About() {
         </p>
 
         <p>
-          The app is built around four core training modules. <strong className="text-primary">Play vs AI</strong>
-           lets you test your skills against five difficulty levels, each paired with live coaching feedback so
+          The app is built around four core training modules. <strong className="text-primary">Play vs AI</strong> 
+          lets you test your skills against five difficulty levels, each paired with live coaching feedback so
           every game becomes a lesson. The <strong className="text-primary">Tactics Trainer</strong> serves
           verified, engine-checked puzzles across forks, pins, skewers, discovered attacks, and mating
           patterns — each with a rich explanation that teaches the <em>why</em>, not just the move. The 
           <strong className="text-primary"> Openings</strong> walks you through major openings and
           their key variations, while the <strong className="text-primary">Endgame Lab</strong> helps you
-          master the critical techniques that decide close games.The <strong className="text-primary">Analyze</strong>
-           section lets you review your match, move by move with our chess god AI bot giving you play by play commentary
+          master the critical techniques that decide close games.The <strong className="text-primary">Analyze</strong> 
+          section lets you review your match, move by move with our chess god AI bot giving you play by play commentary
           on whether your move was a good move, or if you could have made a better decision.
           The <strong className="text-primary">Library</strong> section has some of the most historically 
           famous chess matches in human history and you can study those matches move by move, allowing you
