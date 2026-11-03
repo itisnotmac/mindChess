@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
-import { Crown, TrendingUp, Flame, Brain, Target, Gamepad2, BookOpen, Trophy, Zap, Loader2 } from 'lucide-react';
+import { Crown, Brain, Target, Gamepad2, BookOpen, Trophy, Zap, Loader2 } from 'lucide-react';
 import IntroSequence from '@/components/IntroSequence';
+import ProfileStats from '@/components/ProfileStats';
 
 export default function Dashboard() {
   const [profile, setProfile] = useState(null);
@@ -94,13 +95,6 @@ export default function Dashboard() {
     { to: '/endgames', icon: Target, title: 'Endgame Lab', desc: 'Master critical endgame techniques', color: 'text-destructive' },
   ];
 
-  const stats = [
-    { icon: TrendingUp, label: 'ELO Rating', value: profile?.elo || 1200, color: 'text-primary' },
-    { icon: Flame, label: 'Puzzle Streak', value: profile?.puzzle_streak || 0, color: 'text-[#FFB300]' },
-    { icon: Gamepad2, label: 'Games Played', value: profile?.total_games || 0, color: 'text-[#39FF14]' },
-    { icon: Brain, label: 'Puzzles Solved', value: profile?.puzzles_solved || 0, color: 'text-destructive' },
-  ];
-
   const handleIntroDone = () => {
     try { sessionStorage.setItem('chessmind_intro_seen', '1'); } catch {}
     setIntroDone(true);
@@ -119,14 +113,7 @@ export default function Dashboard() {
         <p className="text-sm text-primary teal-text-glow">From the team that brought you Reel Chess — Let's Chess!</p>
       </div>
 
-      <div className="flex items-center justify-center gap-6 md:gap-8 mb-8">
-        {stats.map((s, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <s.icon className={`w-5 h-5 ${s.color}`} />
-            <span className="text-xl font-bold">{s.value}</span>
-          </div>
-        ))}
-      </div>
+      <ProfileStats profile={profile} className="mb-8" />
 
       <h2 className="text-xl font-bold mb-4 text-primary teal-text-glow text-center">Training Modules</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">

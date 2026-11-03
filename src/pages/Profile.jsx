@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
-import { Crown, TrendingUp, Flame, Brain, Gamepad2, Trophy, Target, BookOpen, Award } from 'lucide-react';
+import { Crown, TrendingUp, Trophy } from 'lucide-react';
+import ProfileStats from '@/components/ProfileStats';
 
 const ACHIEVEMENTS = [
   { name: 'First Steps', desc: 'Play your first game', icon: '🎮', condition: p => p.total_games >= 1 },
@@ -45,15 +46,6 @@ export default function Profile() {
   }
 
   const chartData = (profile.elo_history || []).map((h, i) => ({ game: i + 1, rating: h.rating }));
-  const winRate = profile.total_games > 0 ? Math.round((profile.games_won / profile.total_games) * 100) : 0;
-  const puzzleAccuracy = profile.total_puzzles > 0 ? Math.round((profile.puzzles_solved / profile.total_puzzles) * 100) : 0;
-
-  const stats = [
-    { icon: TrendingUp, label: 'ELO Rating', value: profile.elo || 1200, color: 'text-primary' },
-    { icon: Brain, label: 'Puzzle Rating', value: profile.puzzle_rating || 1200, color: 'text-[#39FF14]' },
-    { icon: Flame, label: 'Longest Streak', value: profile.longest_streak || 0, color: 'text-[#FFB300]' },
-    { icon: Target, label: 'Puzzle Accuracy', value: `${puzzleAccuracy}%`, color: 'text-destructive' },
-  ];
 
   return (
     <div className="p-6 md:p-8 max-w-5xl mx-auto">
@@ -62,15 +54,7 @@ export default function Profile() {
         <h1 className="text-3xl font-bold">Your Profile</h1>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {stats.map((s, i) => (
-          <div key={i} className="bg-card border border-border rounded-xl p-4 teal-border-glow text-center">
-            <s.icon className={`w-6 h-6 mx-auto mb-2 ${s.color}`} />
-            <div className="text-2xl font-bold">{s.value}</div>
-            <div className="text-xs text-muted-foreground">{s.label}</div>
-          </div>
-        ))}
-      </div>
+      <ProfileStats profile={profile} className="mb-8" />
 
       <div className="bg-card border border-border rounded-xl p-6 mb-8 teal-border-glow">
         <h2 className="font-bold mb-4 flex items-center gap-2"><TrendingUp className="w-5 h-5 text-primary" /> ELO Progression</h2>
