@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { invokeAIChat } from '@/lib/aiClient';
 import { X, Send, Bot } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
@@ -25,13 +25,13 @@ export default function AIChatPanel({ open, onClose }) {
     setInput('');
     setLoading(true);
     setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
-    base44.analytics.track({ eventName: 'ai_mentor_advice_request', properties: { message_length: userMsg.length } });
     try {
-      const conversation = messages.map(m => `${m.role === 'user' ? 'Student' : 'Coach'}: ${m.content}`).join('\n');
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `${SYSTEM_PROMPT}\n\n${conversation}\nStudent: ${userMsg}\nCoach:`,
-      });
-      setMessages(prev => [...prev, { role: 'assistant', content: typeof response === 'string' ? response : 'Let me think about that...' }]);
+      const chatMessages = [...messages, { role: 'user', content: userMsg }].map(m => ({
+        role: m.role,
+        content: m.content,
+      }));
+      const response = await invokeAIChat(chatMessages, SYSTEM_PROMPT);
+      setMessages(prev => [...prev, { role: 'assistant', content: response || 'Let me think about that...' }]);
     } catch (e) {
       setMessages(prev => [...prev, { role: 'assistant', content: "Hmm, I had trouble processing that. Let's try again — ask me something about chess!" }]);
     }

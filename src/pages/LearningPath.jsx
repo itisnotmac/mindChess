@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { base44 } from '@/api/base44Client';
+import { storage } from '@/lib/storage';
 import { STAGES, MODULES, levelFromXp } from '@/lib/learningPath';
 import { GraduationCap, Check, Lock, ArrowRight, Loader2, Star } from 'lucide-react';
 
@@ -14,43 +14,30 @@ export default function LearningPath() {
   const [saving, setSaving] = useState(null);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const user = await base44.auth.me();
-        const profiles = await base44.entities.UserProfile.filter({ created_by_id: user.id });
-        if (profiles.length > 0) setProfile(profiles[0]);
-      } catch (e) {}
-      setLoading(false);
-    })();
+    setProfile(storage.getProfile());
+    setLoading(false);
   }, []);
 
-  const completed = useMemo(() => new Set(profile?.completed_lessons || []), [profile]);
+  const completed = useMemo(() => new Set(profile?.lessonsCompleted || []), [profile]);
   const totalLessons = useMemo(() => STAGES.reduce((n, s) => n + s.lessons.length, 0), []);
   const doneCount = [...completed].filter(id => STAGES.some(s => s.lessons.some(l => l.id === id))).length;
   const progress = totalLessons ? Math.round((doneCount / totalLessons) * 100) : 0;
-  const xp = profile?.path_xp || 0;
+  const xp = profile?.xp || 0;
   const { level, title, into, need } = levelFromXp(xp);
 
   const stageComplete = (stage) => stage.lessons.every(l => completed.has(l.id));
   const stageLocked = (idx) => idx > 0 && !stageComplete(STAGES[idx - 1]);
 
-  const toggle = async (lesson) => {
+  const toggle = (lesson) => {
     if (!profile) return;
     const isDone = completed.has(lesson.id);
     const next = new Set(completed);
     let newXp = xp;
-    if (isDone) { next.delete(lesson.id); newXp -= lesson.xp; }
+    if (isDone) { next.delete(lesson.id); newXp = Math.max(0, newXp - lesson.xp); }
     else { next.add(lesson.id); newXp += lesson.xp; }
-    const updates = { completed_lessons: [...next], path_xp: Math.max(0, newXp) };
-    setSaving(lesson.id);
-    setProfile({ ...profile, ...updates });
-    try {
-      await base44.entities.UserProfile.update(profile.id, updates);
-      base44.analytics.track({ eventName: 'lesson_toggle', properties: { lesson: lesson.id, done: !isDone } });
-    } catch (e) {
-      setProfile(profile);
-    }
-    setSaving(null);
+    const updated = { ...profile, lessonsCompleted: [...next], xp: newXp };
+    storage.saveProfile(updated);
+    setProfile(updated);
   };
 
   if (loading) {

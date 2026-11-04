@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { base44 } from '@/api/base44Client';
+import { storage } from '@/lib/storage';
 import ChessBoard from '@/components/chess/ChessBoard';
 import { createGame, makeMove, getFen, getTurn } from '@/lib/chessEngine';
 import { playSound } from '@/lib/sound';
@@ -22,13 +22,7 @@ export default function Tactics() {
   const orientation = puzzle ? (getTurn(createGame(puzzle.fen)) === 'w' ? 'white' : 'black') : 'white';
 
   useEffect(() => {
-    (async () => {
-      try {
-        const user = await base44.auth.me();
-        const profiles = await base44.entities.UserProfile.filter({ created_by_id: user.id });
-        if (profiles.length > 0) setProfile(profiles[0]);
-      } catch (e) {}
-    })();
+    setProfile(storage.getProfile());
     loadNewPuzzle();
   }, []);
 
@@ -55,32 +49,20 @@ export default function Tactics() {
       setSolved(s => s + 1);
       setStreak(s => s + 1);
       setExplanation(puzzle.explanation);
-      if (profile) {
-        const newStreak = (profile.puzzle_streak || 0) + 1;
-        const updates = {
-          puzzles_solved: (profile.puzzles_solved || 0) + 1,
-          total_puzzles: (profile.total_puzzles || 0) + 1,
-          puzzle_streak: newStreak,
-          longest_streak: Math.max(profile.longest_streak || 0, newStreak),
+      {
+        const updated = {
+          ...profile,
+          xp: (profile.xp || 0) + 10,
+          puzzlesSolved: (profile.puzzlesSolved || 0) + 1,
         };
-        base44.entities.UserProfile.update(profile.id, updates).catch(() => {});
-        setProfile({ ...profile, ...updates });
+        storage.saveProfile(updated);
+        setProfile(updated);
       }
-      base44.entities.PuzzleAttempt.create({
-        puzzle_id: puzzle.fen, theme: puzzle.theme, result: 'solved',
-        rating_before: profile?.puzzle_rating || 1200, rating_after: (profile?.puzzle_rating || 1200) + 8,
-      }).catch(() => {});
       return true;
     } else {
       playSound('wrong');
       setFailed(true);
       setStreak(0);
-      if (profile) {
-        base44.entities.UserProfile.update(profile.id, {
-          puzzle_streak: 0, puzzles_failed: (profile.puzzles_failed || 0) + 1,
-          total_puzzles: (profile.total_puzzles || 0) + 1,
-        }).catch(() => {});
-      }
       return false;
     }
   };

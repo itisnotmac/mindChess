@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
-import { base44 } from '@/api/base44Client';
+import { invokeAI } from '@/lib/aiClient';
 import ChessBoard from '@/components/chess/ChessBoard';
 import { createGame, makeMove, getFen, getTurn, isCheckmate, isDraw, isStalemate, isCheck, isGameOver, getAIMoveAsync } from '@/lib/chessEngine';
 import { playSound } from '@/lib/sound';
@@ -40,13 +40,7 @@ export default function PlayVsAI() {
   const movableColor = playerColor === 'white' ? 'w' : 'b';
 
   useEffect(() => {
-    (async () => {
-      try {
-        const user = await base44.auth.me();
-        const profiles = await base44.entities.UserProfile.filter({ created_by_id: user.id });
-        if (profiles.length > 0) setProfile(profiles[0]);
-      } catch (e) {}
-    })();
+    // No auth needed — profile lives in localStorage
   }, []);
 
   useEffect(() => {
@@ -57,9 +51,9 @@ export default function PlayVsAI() {
 
   const fetchCommentary = useCallback(async (currentFen, moveList, lastMoveSan) => {
     try {
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are a chess coach giving brief live commentary. Position FEN: ${currentFen}. Moves: ${moveList.join(' ')}. Last move: ${lastMoveSan}. Give a 1-2 sentence coaching insight. Be encouraging and specific. Do not use markdown.`,
-      });
+      const response = await invokeAI(
+        `You are a chess coach giving brief live commentary. Position FEN: ${currentFen}. Moves: ${moveList.join(' ')}. Last move: ${lastMoveSan}. Give a 1-2 sentence coaching insight. Be encouraging and specific. Do not use markdown.`
+      );
       setCommentary(prev => [...prev, { moveNum: moveList.length, text: response }]);
     } catch (e) {}
   }, []);
@@ -102,28 +96,8 @@ export default function PlayVsAI() {
   const handleGameOver = (g, result) => {
     setGameResult(result);
     setPhase('gameover');
-    const aiElo = DIFFICULTIES.find(d => d.value === difficulty).rating;
-    const playerElo = profile?.elo || 1200;
-    const newElo = calcElo(playerElo, aiElo, result);
-    setEloChange(newElo - playerElo);
-    if (profile) {
-      const updates = {
-        total_games: (profile.total_games || 0) + 1,
-        elo: newElo,
-        elo_history: [...(profile.elo_history || []), { date: new Date().toISOString(), rating: newElo }],
-      };
-      if (result === 'win') updates.games_won = (profile.games_won || 0) + 1;
-      else if (result === 'loss') updates.games_lost = (profile.games_lost || 0) + 1;
-      else updates.games_drawn = (profile.games_drawn || 0) + 1;
-      base44.entities.UserProfile.update(profile.id, updates).catch(() => {});
-      setProfile({ ...profile, ...updates });
-    }
-    base44.entities.GameSession.create({
-      moves: g.history(),
-      result,
-      ai_difficulty: difficulty,
-      player_color: playerColor,
-    }).catch(() => {});
+    // Game results are not persisted in the offline app — no ELO, no session history
+    setEloChange(0);
   };
 
   const handleMove = (from, to, promotion) => {

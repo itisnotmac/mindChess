@@ -4,7 +4,6 @@ import { LayoutDashboard, Gamepad2, Brain, BookOpen, Target, User, Crown, Messag
 import AIChatPanel from '@/components/AIChatPanel';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SettingsProvider } from '@/lib/SettingsContext';
-import SettingsDialog from '@/components/SettingsDialog';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 
 const CORE_TABS = [
@@ -206,7 +205,7 @@ export default function Layout() {
       </Sheet>
 
       <AIChatPanel open={chatOpen} onClose={() => setChatOpen(false)} />
-      <SettingsDialog open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      {/* SettingsDialog removed — no account management needed in offline app */}
     </div>
     </SettingsProvider>
   );

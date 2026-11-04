@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { invokeAI } from '@/lib/aiClient';
 import ChessBoard from '@/components/chess/ChessBoard';
 import EvalBar from '@/components/chess/EvalBar';
 import { createGame, makeSanMove, getBestMove, evaluatePosition, loadPgnGame } from '@/lib/chessEngine';
-import { LineChart, Line, XAxis, YAxis, ReferenceLine, ResponsiveContainer, Tooltip } from 'recharts';
+import EvalChart from '@/components/chess/EvalChart';
 import { Microscope, Loader2, ArrowLeft, ChevronLeft, ChevronRight, RotateCcw, Wand2, AlertTriangle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import ReadAloudButton from '@/components/ReadAloudButton';
@@ -81,7 +81,6 @@ export default function AnalyzeGame() {
       setAnalysis({ moves, evalSeries, result, keyMoments, length: verbose.length });
       setViewIndex(verbose.length);
       setPhase('review');
-      base44.analytics.track({ eventName: 'analyze_game', properties: { plies: verbose.length, blunders: keyMoments.filter(m => m.quality === 'blunder').length } });
       fetchNarrative(pgnText, result, sideText, keyMoments);
     }, 50);
   };
@@ -99,7 +98,7 @@ Detected key moments:
 ${momentList || 'No major mistakes detected — a clean game.'}
 
 Write a concise coaching summary (markdown, ~180 words). Cover: what the student did well, the 1-2 most important mistakes with the idea behind the better move (use move notation), and one concrete thing to work on next. Be specific and encouraging.`;
-      const res = await base44.integrations.Core.InvokeLLM({ prompt });
+      const res = await invokeAI(prompt);
       setNarrative(typeof res === 'string' ? res : '');
     } catch (e) {
       setNarrative('Could not generate the narrative summary, but the move-by-move review below is still yours to study.');
@@ -222,15 +221,7 @@ Write a concise coaching summary (markdown, ~180 words). Cover: what the student
 
           <div className="bg-card border border-border rounded-xl p-4 teal-border-glow">
             <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wide mb-2">Evaluation</h3>
-            <ResponsiveContainer width="100%" height={130}>
-              <LineChart data={a.evalSeries}>
-                <XAxis dataKey="ply" hide />
-                <YAxis domain={[-1000, 1000]} hide />
-                <ReferenceLine y={0} stroke="hsl(var(--border))" />
-                <Tooltip formatter={(v) => fmtEval(v)} labelFormatter={(l) => `Move ${l}`} contentStyle={{ background: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: 8, fontSize: 12 }} />
-                <Line type="monotone" dataKey="eval" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} />
-              </LineChart>
-            </ResponsiveContainer>
+            <EvalChart data={a.evalSeries} />
             <p className="text-[10px] text-muted-foreground text-center mt-1">Up = White advantage · Down = Black advantage</p>
           </div>
 

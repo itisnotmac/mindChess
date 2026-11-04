@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Mail, Send } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
 
 const CONTACT_EMAIL = 'mindchessgame@gmail.com';
 
@@ -17,7 +16,6 @@ export default function Contact() {
       return;
     }
     setError('');
-    base44.analytics.track({ eventName: 'contact_form_submit', properties: { length: message.length } });
     const subject = encodeURIComponent(`Mind Chess contact from ${name}`);
     const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
     window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
