@@ -8,12 +8,10 @@ const KEYS = {
   unlocked: 'mc_unlocked',
 };
 
-const DEFAULT_PROFILE = {
+export const DEFAULT_PROFILE = {
   xp: 0,
-  level: 1,
   puzzlesSolved: 0,
   lessonsCompleted: [],
-  aiDifficultiesUnlocked: ['beginner'],
 };
 
 export const storage = {

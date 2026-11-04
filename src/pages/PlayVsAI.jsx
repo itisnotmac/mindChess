@@ -3,15 +3,18 @@ import { invokeAI } from '@/lib/aiClient';
 import ChessBoard from '@/components/chess/ChessBoard';
 import { createGame, makeMove, getFen, getTurn, isCheckmate, isDraw, isStalemate, isCheck, isGameOver, getAIMoveAsync } from '@/lib/chessEngine';
 import { playSound } from '@/lib/sound';
+import { storage } from '@/lib/storage';
+import { getLevelForXP, canAccess } from '@/lib/progression';
+import LevelGate from '@/components/LevelGate';
 import { Gamepad2, RotateCcw, ArrowLeft, Bot, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const DIFFICULTIES = [
-  { value: 'beginner', label: 'Yellow Belt', rating: 800, desc: 'Random moves' },
-  { value: 'easy', label: 'Tough Guy', rating: 1000, desc: '1-ply search' },
-  { value: 'intermediate', label: 'Getting Serious', rating: 1200, desc: '2-ply search' },
-  { value: 'advanced', label: 'Brick Top', rating: 1500, desc: '3-ply search' },
-  { value: 'master', label: 'Final Boss', rating: 1800, desc: '4-ply search' },
+  { value: 'beginner', label: 'Yellow Belt',      rating: 800,  desc: 'Random moves',  unlockTag: null },
+  { value: 'easy',     label: 'Tough Guy',         rating: 1000, desc: '1-ply search',  unlockTag: null },
+  { value: 'intermediate', label: 'Getting Serious', rating: 1200, desc: '2-ply search', unlockTag: 'ai_intermediate' },
+  { value: 'advanced', label: 'Brick Top',         rating: 1500, desc: '3-ply search',  unlockTag: 'ai_advanced' },
+  { value: 'master',   label: 'Final Boss',        rating: 1800, desc: '4-ply search',  unlockTag: 'ai_master' },
 ];
 
 function calcElo(playerElo, aiElo, result) {
@@ -40,7 +43,7 @@ export default function PlayVsAI() {
   const movableColor = playerColor === 'white' ? 'w' : 'b';
 
   useEffect(() => {
-    // No auth needed — profile lives in localStorage
+    setProfile(storage.getProfile());
   }, []);
 
   useEffect(() => {
@@ -147,17 +150,23 @@ export default function PlayVsAI() {
         </div>
         <h2 className="text-sm font-bold text-muted-foreground mb-3 uppercase tracking-wide">Difficulty</h2>
         <div className="space-y-2 mb-8">
-          {DIFFICULTIES.map(d => (
-            <button key={d.value} onClick={() => setDifficulty(d.value)}
-              className={`w-full flex items-center justify-between p-4 rounded-lg border transition-all
-                ${difficulty === d.value ? 'border-primary bg-primary/10 teal-glow-sm' : 'border-border bg-card hover:border-primary/30'}`}>
-              <div className="text-left">
-                <div className="font-bold">{d.label}</div>
-                <div className="text-xs text-muted-foreground">{d.desc}</div>
-              </div>
-              <span className="text-primary font-mono text-sm">{d.rating}</span>
-            </button>
-          ))}
+          {DIFFICULTIES.map(d => {
+            const xp = profile?.xp || 0;
+            const locked = d.unlockTag && !canAccess(xp, d.unlockTag);
+            return locked ? (
+              <LevelGate key={d.value} xp={xp} tag={d.unlockTag} />
+            ) : (
+              <button key={d.value} onClick={() => setDifficulty(d.value)}
+                className={`w-full flex items-center justify-between p-4 rounded-lg border transition-all
+                  ${difficulty === d.value ? 'border-primary bg-primary/10 teal-glow-sm' : 'border-border bg-card hover:border-primary/30'}`}>
+                <div className="text-left">
+                  <div className="font-bold">{d.label}</div>
+                  <div className="text-xs text-muted-foreground">{d.desc}</div>
+                </div>
+                <span className="text-primary font-mono text-sm">{d.rating}</span>
+              </button>
+            );
+          })}
         </div>
         <h2 className="text-sm font-bold text-muted-foreground mb-3 uppercase tracking-wide">Your Color</h2>
         <div className="grid grid-cols-2 gap-3 mb-8">

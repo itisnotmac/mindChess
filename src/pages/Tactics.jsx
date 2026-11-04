@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { storage } from '@/lib/storage';
+import { XP } from '@/lib/progression';
 import ChessBoard from '@/components/chess/ChessBoard';
 import { createGame, makeMove, getFen, getTurn } from '@/lib/chessEngine';
 import { playSound } from '@/lib/sound';
@@ -52,7 +53,7 @@ export default function Tactics() {
       {
         const updated = {
           ...profile,
-          xp: (profile.xp || 0) + 10,
+          xp: (profile.xp || 0) + XP.PUZZLE_SOLVED,
           puzzlesSolved: (profile.puzzlesSolved || 0) + 1,
         };
         storage.saveProfile(updated);

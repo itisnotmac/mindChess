@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { storage } from '@/lib/storage';
+import { getLevelForXP } from '@/lib/progression';
 import { Crown, Star, Brain, BookOpen } from 'lucide-react';
 import ProfileStats from '@/components/ProfileStats';
 
@@ -15,19 +16,11 @@ export default function Profile() {
   }
 
   const xp = profile.xp || 0;
-  const level = profile.level || 1;
   const puzzlesSolved = profile.puzzlesSolved || 0;
   const lessonsCompleted = (profile.lessonsCompleted || []).length;
 
-  // XP thresholds per level
-  const LEVEL_XP = [0, 100, 300, 600, 1000];
-  const nextLevelXp = LEVEL_XP[level] ?? null;
-  const prevLevelXp = LEVEL_XP[level - 1] ?? 0;
-  const xpIntoLevel = xp - prevLevelXp;
-  const xpNeeded = nextLevelXp !== null ? nextLevelXp - prevLevelXp : null;
-  const xpPercent = xpNeeded ? Math.min(100, Math.round((xpIntoLevel / xpNeeded) * 100)) : 100;
-
-  const LEVEL_LABELS = ['', 'Beginner', 'Intermediate', 'Advanced', 'Expert', 'Master'];
+  const { level, title: levelLabel, xpIntoLevel, xpNeeded, progress, isMax } = getLevelForXP(xp);
+  const xpPercent = Math.round(progress * 100);
 
   return (
     <div className="p-6 md:p-8 max-w-5xl mx-auto">
@@ -43,7 +36,7 @@ export default function Profile() {
         <div className="flex items-center justify-between mb-3">
           <div>
             <span className="text-2xl font-bold text-primary">Level {level}</span>
-            <span className="ml-2 text-muted-foreground">{LEVEL_LABELS[level] || ''}</span>
+            <span className="ml-2 text-muted-foreground">{levelLabel}</span>
           </div>
           <div className="flex items-center gap-1 text-[#FFB300] font-bold">
             <Star className="w-4 h-4" />
@@ -53,12 +46,10 @@ export default function Profile() {
         <div className="w-full h-3 bg-secondary rounded-full overflow-hidden">
           <div className="h-full bg-primary transition-all rounded-full" style={{ width: `${xpPercent}%` }} />
         </div>
-        {xpNeeded !== null && (
-          <p className="text-xs text-muted-foreground mt-2">{xpNeeded - xpIntoLevel} XP to level {level + 1}</p>
-        )}
-        {xpNeeded === null && (
-          <p className="text-xs text-[#FFB300] mt-2 font-bold">Max level reached!</p>
-        )}
+        {isMax
+          ? <p className="text-xs text-[#FFB300] mt-2 font-bold">Max level reached!</p>
+          : <p className="text-xs text-muted-foreground mt-2">{xpNeeded - xpIntoLevel} XP to level {level + 1}</p>
+        }
       </div>
 
       {/* Stats grid */}

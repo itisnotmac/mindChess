@@ -23,7 +23,7 @@ export default function LearningPath() {
   const doneCount = [...completed].filter(id => STAGES.some(s => s.lessons.some(l => l.id === id))).length;
   const progress = totalLessons ? Math.round((doneCount / totalLessons) * 100) : 0;
   const xp = profile?.xp || 0;
-  const { level, title, into, need } = levelFromXp(xp);
+  const { level, title, xpIntoLevel: into, xpNeeded: need, isMax } = levelFromXp(xp);
 
   const stageComplete = (stage) => stage.lessons.every(l => completed.has(l.id));
   const stageLocked = (idx) => idx > 0 && !stageComplete(STAGES[idx - 1]);
@@ -72,7 +72,7 @@ export default function LearningPath() {
           <div className="flex items-center gap-2 text-sm">
             <Star className="w-4 h-4 text-[#FFB300]" />
             <span className="font-bold text-primary">{xp} XP</span>
-            <span className="text-muted-foreground">· {need - into} XP to level {level + 1}</span>
+            <span className="text-muted-foreground">· {isMax ? 'Max level!' : `${need - into} XP to level ${level + 1}`}</span>
           </div>
         </div>
       </div>

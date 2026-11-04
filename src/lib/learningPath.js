@@ -59,9 +59,5 @@ export const STAGES = [
   },
 ];
 
-export function levelFromXp(xp) {
-  const level = Math.floor(xp / 300) + 1;
-  const titles = ['Novice', 'Apprentice', 'Player', 'Club', 'Tournament', 'Expert', 'Candidate Master', 'Master'];
-  const title = titles[Math.min(level - 1, titles.length - 1)];
-  return { level, title, into: xp % 300, need: 300 };
-}
+// Re-export from canonical progression module so all pages use one source of truth
+export { getLevelForXP as levelFromXp } from '@/lib/progression';
